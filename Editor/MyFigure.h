@@ -1,5 +1,6 @@
 #pragma once
-#include "Editor.h"
+#include <SFML/Graphics.hpp>
+#include <iostream>
 class MyFigure
 {
 public:

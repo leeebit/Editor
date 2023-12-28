@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MyFigure.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Triangle.cpp" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MyFigure.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Triangle.h" />
