@@ -10,6 +10,7 @@ class Presentation
 		Presentation();
 		~Presentation();
 		int CreateSlide();
+		int CreateSlideAtIndex(int index);
 		void DeleteSlide();
 		int DeleteSlideAtIndex(int index);
 		Slide** getSlides(); // Геттер для slides

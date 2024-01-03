@@ -34,6 +34,29 @@ int Presentation::CreateSlide() {
 
 }
 
+int Presentation::CreateSlideAtIndex(int index)
+{
+	if(!slides) {
+		slides=new Slide*[1];
+		slides[0]=new Slide();
+		std::cout<<"Slide is created!"<<std::endl;
+	}
+	else {
+		Slide** temp=new Slide*[slideCount+1];
+		for(int i=0; i<=slideCount; ++i) {
+			if(i==index)
+				temp[i]=new Slide();
+			else
+				temp[i]=slides[i];
+		}
+		delete[] slides;
+		slides=temp;
+	}
+	slideCount++;
+
+	return slideCount;
+}
+
 void Presentation::DeleteSlide() {
     if (slides != nullptr) {
         for (int i = 0; i < slideCount; ++i) {
