@@ -4,8 +4,8 @@
 class MyFigures : public Elements
 {
 public:
-	virtual void fillColorFigure();
-	virtual void fillColorOutlineFigure();
+	virtual void setfillColorFigure(const sf::Color& color);
+	virtual void setfillColorOutlineFigure(const sf::Color& color);
 	virtual void changeTrancperencyFigure();
 };
 

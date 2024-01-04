@@ -109,7 +109,22 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 	triangleButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 100);
 	window.draw(triangleButton);
 
+	sf::RectangleShape createElementPropertiesWindow(sf::Vector2f(300, 200));
+	createElementPropertiesWindow.setFillColor(sf::Color::White);
+	createElementPropertiesWindow.setOutlineColor(sf::Color::Black);
+	createElementPropertiesWindow.setOutlineThickness(1.f);
+	createElementPropertiesWindow.setPosition((window.getSize().x - createElementPropertiesWindow.getSize().x) / 2, (window.getSize().y - createElementPropertiesWindow.getSize().y) / 2);
+	window.draw(createElementPropertiesWindow);
 
+	sf::Text colorFillButton("Circle", font, 20);
+	colorFillButton.setFillColor(sf::Color::Black);
+	colorFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 20);
+	window.draw(colorFillButton);
+
+	sf::Text outlineFillButton("Square", font, 20);
+	outlineFillButton.setFillColor(sf::Color::Black);
+	outlineFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 60);
+	window.draw(outlineFillButton);
 	//палитра цветов
 	for (int i = 0; i < 36; ++i) {
 		colorRectangles[i] = sf::RectangleShape(sf::Vector2f(20, 20));
@@ -241,7 +256,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 				else if (event.key.code == Keyboard::D) {
 					if (presentation != nullptr) {
 						int totalSlides = presentation[0]->getSlideCount();
-						if (currentSlideIndex < totalSlides-1) {
+						if (currentSlideIndex < totalSlides - 1) {
 							currentSlideIndex++; // Переход на следующий слайд
 							std::cout << "Switch to next slide. Current slide: " << currentSlideIndex << std::endl;
 						}
@@ -299,7 +314,13 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			window.draw(triangleButton);
 		}
 
+		if (isChangeElementPropertiesMenuActive) {
+			window.draw(createElementPropertiesWindow);
+			window.draw(colorFillButton);
+			window.draw(outlineFillButton);
+		}
 		window.display();
 	}
 }
+
 

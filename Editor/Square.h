@@ -2,14 +2,20 @@
 #include "MyFigures.h"
 class Square : public MyFigures{
 private:
-	sf::RectangleShape* rectangleShape;
+	sf::RectangleShape* squareShape;
+	float side = 50.0;
+	const int SQUARE = 1;
 public:
-	void drawElements();
+	Square();
+	~Square();
+	void drawElements(sf::RenderWindow& window);
 	void moveElements();
 	void resizeElements();
 	void rotateElements();
-	void fillColorFigure();
-	void fillColorOutlineFigure();
+	void fillColorFigure(const sf::Color& color);
+	void fillColorOutlineFigure(const sf::Color& color);
+	sf::RectangleShape& getSquareShape();
 	void changeTrancperencyFigure();
+
 };
 

@@ -4,7 +4,8 @@
 class Circle : public MyFigures{
 private:
 	sf::CircleShape* circleShape;
-	int radius;
+	float radius = 50.0;
+
 public:
 	Circle();
 	~Circle();
@@ -12,8 +13,10 @@ public:
 	void moveElements();
 	void resizeElements();
 	void rotateElements();
-	void fillColorFigure();
-	void fillColorOutlineFigure();
+	void setfillColorFigure(const sf::Color& color);
+	void setfillColorOutlineFigure(const sf::Color& color);
+	sf::CircleShape& getCircleShape();
 	void changeTrancperencyFigure();
+	
 };
 

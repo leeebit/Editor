@@ -1,8 +1,8 @@
 #include "MyFigures.h"
 
-void MyFigures::fillColorFigure(){};
+void MyFigures::setfillColorFigure(const sf::Color& color){};
 
-void MyFigures::fillColorOutlineFigure(){};
+void MyFigures::setfillColorOutlineFigure(const sf::Color& color){};
 
 void MyFigures::changeTrancperencyFigure(){};
 

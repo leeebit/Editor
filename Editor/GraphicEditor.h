@@ -27,6 +27,7 @@ private:
     int chosenColorIndex = -1;
     bool isColorPickerActive = false;
     bool isCreateElementMenuActive = false;
+    bool isChangeElementPropertiesMenuActive = false;
    
 public:
     GraphicEditor();

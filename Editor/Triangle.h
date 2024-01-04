@@ -3,6 +3,7 @@
 class Triangle : public MyFigures{
 private:
 	sf::ConvexShape triangleShape;
+	const int TRIANGLE = 2;
 public:
 	void drawElements();
 	void moveElements();

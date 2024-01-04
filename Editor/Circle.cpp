@@ -1,8 +1,9 @@
 #include "Circle.h"
 
 Circle::Circle() {
+    this->radius = radius;
     circleShape = new sf::CircleShape();
-    circleShape->setRadius(50); // Устанавливаем радиус круга по умолчанию
+    circleShape->setRadius(radius); // Устанавливаем радиус круга по умолчанию
     circleShape->setFillColor(sf::Color::Blue); // Цвет заливки круга
     circleShape->setOutlineColor(sf::Color::Red); // Цвет обводки круга
     circleShape->setOutlineThickness(2); // Толщина обводки круга
@@ -15,9 +16,18 @@ Circle::~Circle() {
     delete circleShape;
 }
 
-void Circle::fillColorFigure(){};
+void Circle::setfillColorFigure(const sf::Color& color) {
+    circleShape->setFillColor(color);
+};
 
-void Circle::fillColorOutlineFigure(){};
+void Circle::setfillColorOutlineFigure(const sf::Color& color) {
+    circleShape->setOutlineColor(color);
+};
+
+
+sf::CircleShape& Circle::getCircleShape() {
+    return *circleShape;
+}
 
 void Circle::changeTrancperencyFigure(){};
 

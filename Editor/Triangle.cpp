@@ -12,3 +12,4 @@ void Triangle::moveElements(){};
 void Triangle::resizeElements(){};
 
 void Triangle::rotateElements(){};
+
