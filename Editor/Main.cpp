@@ -1,4 +1,4 @@
-#include "GraphicEditor.h"
+#include "Main.h"
 using namespace sf;
 int main() {
 

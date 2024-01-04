@@ -87,119 +87,34 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 	colorPickerDialog.setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2, (window.getSize().y - colorPickerDialog.getSize().y) / 2);
 	window.draw(colorPickerDialog);
 
-	for (int i = 0; i < 36; ++i) {
-		colorRectangles[i] = sf::RectangleShape(sf::Vector2f(20, 20)); // Задаем размеры прямоугольника
-		colorRectangles[i].setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2 + 20 + (i % 6) * 30, (window.getSize().y - colorPickerDialog.getSize().y) / 2 + 20 + (i / 6) * 30); // Позиции прямоугольников с цветами
+	sf::RectangleShape createElementWindow(sf::Vector2f(300, 200));
+	createElementWindow.setFillColor(sf::Color::White);
+	createElementWindow.setOutlineColor(sf::Color::Black);
+	createElementWindow.setOutlineThickness(1.f);
+	createElementWindow.setPosition((window.getSize().x - createElementWindow.getSize().x) / 2, (window.getSize().y - createElementWindow.getSize().y) / 2);
+	window.draw(createElementWindow);
 
-		// Устанавливаем цвет прямоугольника
-		if (i == 0) {
-			colorRectangles[i].setFillColor(sf::Color::Black);
-		}
-		else if (i == 1) {
-			colorRectangles[i].setFillColor(sf::Color(128, 128, 128));
-		}
-		else if (i == 2) {
-			colorRectangles[i].setFillColor(sf::Color(192, 192, 192));
-		}
-		else if (i == 3) {
-			colorRectangles[i].setFillColor(sf::Color::White);
-		}
-		else if (i == 4) {
-			colorRectangles[i].setFillColor(sf::Color(255, 0, 255));
-		}
-		else if (i == 5) {
-			colorRectangles[i].setFillColor(sf::Color(128, 0, 128));
-		}
-		else if (i == 6) {
-			colorRectangles[i].setFillColor(sf::Color::Red);
-		}
-		else if (i == 7) {
-			colorRectangles[i].setFillColor(sf::Color(128, 0, 0));
-		}
-		else if (i == 8) {
-			colorRectangles[i].setFillColor(sf::Color::Yellow);
-		}
-		else if (i == 9) {
-			colorRectangles[i].setFillColor(sf::Color(128, 128, 0));
-		}
-		else if (i == 10) {
-			colorRectangles[i].setFillColor(sf::Color::Green);
-		}
-		else if (i == 11) {
-			colorRectangles[i].setFillColor(sf::Color(0, 128, 0));
-		}
-		else if (i == 12) {
-			colorRectangles[i].setFillColor(sf::Color(0, 255, 255));
-		}
-		else if (i == 13) {
-			colorRectangles[i].setFillColor(sf::Color(0, 128, 128));
-		}
-		else if (i == 14) {
-			colorRectangles[i].setFillColor(sf::Color::Blue);
-		}
-		else if (i == 15) {
-			colorRectangles[i].setFillColor(sf::Color(128, 128, 128));
-		}
-		else if (i == 16) {
-			colorRectangles[i].setFillColor(sf::Color(0, 0, 128));
-		}
-		else if (i == 17) {
-			colorRectangles[i].setFillColor(sf::Color(255, 192, 203));
-		}
-		else if (i == 18) {
-			colorRectangles[i].setFillColor(sf::Color(255, 69, 0));
-		}
-		else if (i == 19) {
-			colorRectangles[i].setFillColor(sf::Color(255, 160, 122));
-		}
-		else if (i == 20) {
-			colorRectangles[i].setFillColor(sf::Color(230, 230, 250));
-		}
-		else if (i == 21) {
-			colorRectangles[i].setFillColor(sf::Color(255, 248, 220));
-		}
-		else if (i == 22) {
-			colorRectangles[i].setFillColor(sf::Color(245, 255, 250));
-		}
-		else if (i == 23) {
-			colorRectangles[i].setFillColor(sf::Color(245, 245, 245));
-		}
-		else if (i == 24) {
-			colorRectangles[i].setFillColor(sf::Color(211, 211, 211));
-		}
-		else if (i == 25) {
-			colorRectangles[i].setFillColor(sf::Color(105, 105, 105));
-		}
-		else if (i == 26) {
-			colorRectangles[i].setFillColor(sf::Color(255, 228, 225));
-		}
-		else if (i == 27) {
-			colorRectangles[i].setFillColor(sf::Color(188, 148, 143));
-		}
-		else if (i == 28) {
-			colorRectangles[i].setFillColor(sf::Color(245, 222, 179));
-		}
-		else if (i == 29) {
-			colorRectangles[i].setFillColor(sf::Color(245, 245, 220));
-		}
-		else if (i == 30) {
-			colorRectangles[i].setFillColor(sf::Color(222, 184, 135));
-		}
-		else if (i == 31) {
-			colorRectangles[i].setFillColor(sf::Color(70, 130, 180));
-		}
-		else if (i == 32) {
-			colorRectangles[i].setFillColor(sf::Color(255, 250, 205));
-		}
-		else if (i == 33) {
-			colorRectangles[i].setFillColor(sf::Color(34, 139, 34));
-		}
-		else if (i == 34) {
-			colorRectangles[i].setFillColor(sf::Color(102, 205, 170));
-		}
-		else if (i == 35) {
-			colorRectangles[i].setFillColor(sf::Color(255, 215, 0));
-		}
+	sf::Text circleButton("Circle", font, 20);
+	circleButton.setFillColor(sf::Color::Black);
+	circleButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 20);
+	window.draw(circleButton);
+
+	sf::Text squareButton("Square", font, 20);
+	squareButton.setFillColor(sf::Color::Black);
+	squareButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 60);
+	window.draw(squareButton);
+
+	sf::Text triangleButton("Triangle", font, 20);
+	triangleButton.setFillColor(sf::Color::Black);
+	triangleButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 100);
+	window.draw(triangleButton);
+
+
+	//палитра цветов
+	for (int i = 0; i < 36; ++i) {
+		colorRectangles[i] = sf::RectangleShape(sf::Vector2f(20, 20));
+		colorRectangles[i].setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2 + 20 + (i % 6) * 30, (window.getSize().y - colorPickerDialog.getSize().y) / 2 + 20 + (i / 6) * 30);
+		colorRectangles[i].setFillColor(colors[i]);
 	}
 
 	while (window.isOpen())
@@ -230,21 +145,40 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						// Логика для создания слайда
 						if (presentation != nullptr) {
 
-							currentSlideIndex = presentation[0]->CreateSlide(); // Создаем слайд
-							std::cout << "Slide is created!" << std::endl;
+							currentSlideIndex = presentation[0]->CreateSlideAtIndex(currentSlideIndex); // Создаем слайд
+							std::cout << currentSlideIndex << std::endl;
 						}
 						else std::cout << "Slide doesn't created!" << std::endl;
 					}
 					else if (createElementText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Elements!" << std::endl;
-						if (presentation != nullptr) {
-							Slide** slides = presentation[0]->getSlides();
-							if (slides != nullptr) {
-								slides[0]->CreateElements();
-								std::cout << "Elements is created!" << std::endl;
-							}
-							else std::cout << "Elements doesn't created!" << std::endl;
+						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+							isCreateElementMenuActive = true;
+						}
 
+					}
+					else if (isCreateElementMenuActive) {
+						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+						if (circleButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+							std::cout << "Clicked Circle!" << std::endl;
+							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getCircleType());
+								isCreateElementMenuActive = false;
+							}
+						}
+						else if (squareButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+							std::cout << "Clicked Square!" << std::endl;
+							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getSquareType());
+								isCreateElementMenuActive = false;
+							}
+						}
+						else if (triangleButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+							std::cout << "Clicked Triangle!" << std::endl;
+							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getTriangleType());
+								isCreateElementMenuActive = false;
+							}
 						}
 					}
 					else if (deleteSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -254,8 +188,8 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							std::cout << currentSlideIndex << std::endl;
 						}
 						else std::cout << "Slide doesn't deleted!" << std::endl;
-
 					}
+
 					else if (isColorPickerActive && event.mouseButton.button == Mouse::Left) {
 						Vector2f mousePos = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
 
@@ -270,7 +204,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						// Если был выбран цвет, применяем его к слайду
 						if (chosenColorIndex != -1 && currentSlideIndex != -1) {
 							sf::Color selectedColor = colorRectangles[chosenColorIndex].getFillColor();
-							presentation[0]->getSlides()[currentSlideIndex - 1]->SetBackgroundColor(selectedColor);
+							presentation[0]->getSlides()[currentSlideIndex]->SetBackgroundColor(selectedColor);
 							isColorPickerActive = false; // Закрыть диалоговое окно после выбора цвета
 							chosenColorIndex = -1;
 							std::cout << currentSlideIndex << std::endl;
@@ -299,7 +233,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 
 			case Event::KeyPressed:
 				if (event.key.code == Keyboard::A) {
-					if (currentSlideIndex > 1) {
+					if (currentSlideIndex > 0) {
 						currentSlideIndex--; // Переход на предыдущий слайд
 						std::cout << "Switch to previous slide. Current slide: " << currentSlideIndex << std::endl;
 					}
@@ -307,7 +241,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 				else if (event.key.code == Keyboard::D) {
 					if (presentation != nullptr) {
 						int totalSlides = presentation[0]->getSlideCount();
-						if (currentSlideIndex < totalSlides) {
+						if (currentSlideIndex < totalSlides-1) {
 							currentSlideIndex++; // Переход на следующий слайд
 							std::cout << "Switch to next slide. Current slide: " << currentSlideIndex << std::endl;
 						}
@@ -338,8 +272,15 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 
 		if (presentation != nullptr) {
 			Slide** slides = presentation[0]->getSlides();
-			if (slides != nullptr && currentSlideIndex > 0 && currentSlideIndex <= presentation[0]->getSlideCount()) {
-				window.draw(slides[currentSlideIndex - 1]->getBackground());
+			if (slides != nullptr && currentSlideIndex >= 0 && currentSlideIndex <= presentation[0]->getSlideCount()) {
+				window.draw(slides[currentSlideIndex]->getBackground());
+
+				Elements** elements = slides[currentSlideIndex]->getElements();
+				if (elements != nullptr) {
+					for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); ++i) {
+						elements[i]->drawElements(window);
+					}
+				}
 			}
 		}
 
@@ -349,6 +290,13 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			for (int i = 0; i < 36; ++i) {
 				window.draw(colorRectangles[i]);
 			}
+		}
+
+		if (isCreateElementMenuActive) {
+			window.draw(createElementWindow);
+			window.draw(circleButton);
+			window.draw(squareButton);
+			window.draw(triangleButton);
 		}
 
 		window.display();

@@ -16,7 +16,7 @@ int Presentation::CreateSlide() {
 	if (!slides) {
 		slides = new Slide * [1];
 		slides[0] = new Slide();
-        std::cout << "Slide is created!" << std::endl;
+        //std::cout << "Slide is created!" << std::endl;
 	}
 	else {
 		//перевыделение памяти на +1;
@@ -33,6 +33,37 @@ int Presentation::CreateSlide() {
     return slideCount;
 
 }
+
+int Presentation::CreateSlideAtIndex(int index)
+{
+    if (!slides) {
+        slides = new Slide * [1];
+        slides[0] = new Slide();
+        index--;
+       // std::cout << "Slide is created!" << std::endl;
+    }
+    else {
+        Slide** temp = new Slide * [slideCount + 1];
+        int i;
+        for (i = 0; i <= slideCount; ++i) {
+            if (i == index + 1)
+            {
+                temp[i] = new Slide();
+                break;
+            }
+            else
+                temp[i] = slides[i];
+        }
+        for (; i < slideCount; ++i)
+            temp[i + 1] = slides[i];
+        delete[] slides;
+        slides = temp;
+    }
+    slideCount++;
+
+    return index+1;
+}
+
 
 void Presentation::DeleteSlide() {
     if (slides != nullptr) {
@@ -51,19 +82,21 @@ void Presentation::DeleteSlide() {
 
 int Presentation::DeleteSlideAtIndex(int index) {
     if (slides != nullptr && index >= 0 && index < slideCount) {
-        delete slides[index]; // Удаляем слайд по указанному индексу
+        delete slides[index];
         slides[index] = nullptr;
 
-        // Смещаем слайды после удаленного на одну позицию влево
         for (int i = index; i < slideCount - 1; ++i) {
             slides[i] = slides[i + 1];
         }
 
-        slides[slideCount - 1] = nullptr; // Очищаем последний слайд
+        slides[slideCount - 1] = nullptr; 
         slideCount--;
     }
 
     return slideCount;
 }
+
+
+
 
 
