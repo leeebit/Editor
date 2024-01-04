@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
+
 class Elements
 {
 private:
@@ -10,5 +12,7 @@ public:
 	virtual void moveElements();
 	virtual void resizeElements();
 	virtual void rotateElements();
+	virtual void showMenu();
+	
 };
 

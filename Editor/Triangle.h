@@ -12,5 +12,6 @@ public:
 	void fillColorFigure();
 	void fillColorOutlineFigure();
 	void changeTrancperencyFigure();
+	
 };
 

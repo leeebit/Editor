@@ -11,11 +11,9 @@ Square::Square() {
     squareShape->setPosition(100, 125); // Позиция квадрата на экране (можно изменить)
 }
 
-
 Square::~Square() {
 	delete squareShape;
 }
-
 
 void Square::fillColorFigure(const sf::Color& color){
 	squareShape->setFillColor(color);
@@ -40,4 +38,5 @@ void Square::moveElements(){};
 void Square::resizeElements(){};
 
 void Square::rotateElements(){};
+
 

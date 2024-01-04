@@ -83,16 +83,28 @@ void Presentation::DeleteSlide() {
 int Presentation::DeleteSlideAtIndex(int index) {
     if (slides != nullptr && index >= 0 && index < slideCount) {
         delete slides[index];
-        slides[index] = nullptr;
 
         for (int i = index; i < slideCount - 1; ++i) {
+            if(i!=0)
             slides[i] = slides[i + 1];
         }
 
-        slides[slideCount - 1] = nullptr; 
-        slideCount--;
+        if (slideCount == 1)
+        {
+            delete[] slides;
+            slides = nullptr;
+            slideCount = 0;
+        }
+        else
+        {
+            slides[slideCount - 1] = nullptr;
+            slideCount--;
+        }
+
     }
 
+    if (slideCount > 0)
+        return slideCount - 1;
     return slideCount;
 }
 

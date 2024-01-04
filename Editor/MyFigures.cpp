@@ -4,5 +4,5 @@ void MyFigures::setfillColorFigure(const sf::Color& color){};
 
 void MyFigures::setfillColorOutlineFigure(const sf::Color& color){};
 
-void MyFigures::changeTrancperencyFigure(){};
+void MyFigures::setTransparency(const sf::Color& color, int transparency){};
 

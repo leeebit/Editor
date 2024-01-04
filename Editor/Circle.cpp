@@ -24,19 +24,23 @@ void Circle::setfillColorOutlineFigure(const sf::Color& color) {
     circleShape->setOutlineColor(color);
 };
 
-
 sf::CircleShape& Circle::getCircleShape() {
     return *circleShape;
 }
 
-void Circle::changeTrancperencyFigure(){};
+void Circle::setTransparency(const sf::Color& color, int transparency) {
+    
+};
 
 void Circle::drawElements(sf::RenderWindow& window){
     window.draw(*circleShape);
 };
+
+void Circle::showMenu(){};
 
 void Circle::moveElements(){};
 
 void Circle::resizeElements(){};
 
 void Circle::rotateElements(){};
+

@@ -19,7 +19,7 @@ Slide::~Slide() {
 		delete[] elements;
 	}
 }
-
+  
 int Slide::getCircleType(){
     return CIRCLE;
 }

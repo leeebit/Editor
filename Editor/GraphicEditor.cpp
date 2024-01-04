@@ -199,7 +199,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					else if (deleteSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						if (presentation != nullptr) {
 							std::cout << "Clicked Delete Slide!" << std::endl;
-							currentSlideIndex = presentation[0]->DeleteSlideAtIndex(currentSlideIndex - 1);
+							currentSlideIndex = presentation[0]->DeleteSlideAtIndex(currentSlideIndex);
 							std::cout << currentSlideIndex << std::endl;
 						}
 						else std::cout << "Slide doesn't deleted!" << std::endl;
@@ -229,8 +229,6 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.mouseButton.button == Mouse::Right) {
-					// Обработка правой кнопки мыши
-					std::cout << "Clicked Change slide background!" << std::endl;
 					Vector2i mousePos = Mouse::getPosition(window);
 					if (presentation != nullptr) {
 						Slide** slides = presentation[0]->getSlides();

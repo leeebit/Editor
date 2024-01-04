@@ -1,5 +1,7 @@
 #pragma once
 #include "Presentation.h"
+#include "Slide.h"
+#include "Elements.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

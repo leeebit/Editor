@@ -16,7 +16,9 @@ public:
 	void setfillColorFigure(const sf::Color& color);
 	void setfillColorOutlineFigure(const sf::Color& color);
 	sf::CircleShape& getCircleShape();
-	void changeTrancperencyFigure();
+	void setTransparency(const sf::Color& color, int transparency);
+	void showMenu(); //меню характеристик, что можно сделать с элементом
+
 	
 };
 

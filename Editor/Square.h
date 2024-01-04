@@ -16,6 +16,6 @@ public:
 	void fillColorOutlineFigure(const sf::Color& color);
 	sf::RectangleShape& getSquareShape();
 	void changeTrancperencyFigure();
-
+	
 };
 

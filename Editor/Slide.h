@@ -6,15 +6,18 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+enum ElementType {
+	CIRCLE = 0,
+	SQUARE = 1,
+	TRIANGLE = 2
+};
+
 class Slide
 {
 private: 
 	Elements** elements;
     sf::RectangleShape* background;
 	int elementCount;
-	static const int CIRCLE = 0;
-	static const int SQUARE = 1;
-	static const int TRIANGLE = 2;
 	
 public: 
 	Slide();
