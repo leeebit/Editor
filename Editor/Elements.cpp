@@ -10,3 +10,5 @@ void Elements::rotateElements(){}
 
 void Elements::showMenu(){};
 
+sf::FloatRect Elements::getBounds(){};
+

@@ -85,8 +85,8 @@ int Presentation::DeleteSlideAtIndex(int index) {
         delete slides[index];
 
         for (int i = index; i < slideCount - 1; ++i) {
-            if(i!=0)
-            slides[i] = slides[i + 1];
+            if (i != 0)
+                slides[i] = slides[i + 1];
         }
 
         if (slideCount == 1)

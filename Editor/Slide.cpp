@@ -39,6 +39,35 @@ Elements** Slide::getElements() {
 int Slide::getElementCount() {
     return elementCount;
 }
+
+void Slide::setCurrentElement(Elements* element) {
+    currentElement = element;
+}
+
+Elements* Slide::getCurrentElement() {
+    return currentElement;
+}
+
+std::string Slide::getTypeAsString(int elementType) {
+    std::string elementTypeString;
+
+    switch (elementType) {
+    case CIRCLE:
+        elementTypeString = "круг";
+        break;
+    case SQUARE:
+        elementTypeString = "квадрат";
+        break;
+    case TRIANGLE:
+        elementTypeString = "треугольник";
+        break;
+    default:
+        elementTypeString = "неизвестный тип";
+        break;
+    }
+
+    return elementTypeString;
+}
   
 void Slide::createElements(int selectedFigure) {
         if (!elements) {
@@ -76,9 +105,9 @@ void Slide::createElements(int selectedFigure) {
             }
         }
         elementCount++;
-
+        setCurrentElement(elements[elementCount - 1]);
         std::cout << "Element is created!" << std::endl;
-    }
+ }
 
 
 
@@ -100,5 +129,5 @@ void Slide::Draw(sf::RenderWindow& window) {
         }
     }*/
    
-}
+  }
 

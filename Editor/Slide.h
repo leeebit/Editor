@@ -18,16 +18,20 @@ private:
 	Elements** elements;
     sf::RectangleShape* background;
 	int elementCount;
+	Elements* currentElement;
 	
 public: 
 	Slide();
 	~Slide(); 
 	void createElements(int selectedFigure);
+	std::string getTypeAsString(int elementType);
 	void SetBackgroundColor(const sf::Color& color);
 	static int getCircleType();
 	static int getSquareType();
 	static int getTriangleType();
 	Elements** getElements();
+	void setCurrentElement(Elements* element);
+	Elements* getCurrentElement();
 	int getElementCount();
 	sf::RectangleShape& getBackground();
 	void Draw(sf::RenderWindow& window);

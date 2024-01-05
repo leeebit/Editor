@@ -30,6 +30,7 @@ private:
     bool isColorPickerActive = false;
     bool isCreateElementMenuActive = false;
     bool isChangeElementPropertiesMenuActive = false;
+
    
 public:
     GraphicEditor();
@@ -39,5 +40,6 @@ public:
     int getCurrentSlideIndex();
     void setCurrentSlideIndex(int a);
     void CreatePresentation();
+    void handleMouseClickOnElement(sf::Vector2f mousePosition);
 };
 

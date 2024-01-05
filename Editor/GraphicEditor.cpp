@@ -2,8 +2,6 @@
 #include <vector>
 using namespace sf;
 
-
-
 GraphicEditor::GraphicEditor() {
 	presentation = nullptr;
 }
@@ -43,6 +41,34 @@ int GraphicEditor::getCurrentSlideIndex() {
 void GraphicEditor::setCurrentSlideIndex(int a) {
 	currentSlideIndex = a;
 }
+
+void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
+	// Проверяем наличие презентации и корректный индекс слайда
+	if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+		// Получаем текущий слайд
+		Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+
+		// Получаем элементы текущего слайда
+		Elements** elements = currentSlide->getElements();
+		if (elements != nullptr) {
+			for (int i = currentSlide->getElementCount() - 1; i >= 0; --i) {
+				// Получаем границы текущего элемента
+				sf::FloatRect elementBounds = elements[i]->getBounds();
+
+				// Проверяем, попадает ли щелчок мыши внутрь границ элемента
+				if (elementBounds.contains(mousePosition)) {
+					// Устанавливаем элемент в качестве текущего
+					currentSlide->setCurrentElement(elements[i]);
+
+					std::string elementTypeString = currentSlide->getTypeAsString(elementType);
+					std::cout << "Ваш элемент стал текущим. Тип элемента: " << elementTypeString << std::endl;
+					break;
+				}
+			}
+		}
+	}
+}
+
 
 void GraphicEditor::App(sf::RenderWindow& window) {
 

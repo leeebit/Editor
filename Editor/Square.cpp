@@ -27,6 +27,10 @@ sf::RectangleShape& Square::getSquareShape() {
 	return *squareShape;
 }
 
+sf::FloatRect Square::getBounds() {
+    return squareShape->getGlobalBounds();
+};
+
 void Square::changeTrancperencyFigure(){};
 
 void Square::drawElements(sf::RenderWindow& window){

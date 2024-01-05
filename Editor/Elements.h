@@ -13,6 +13,6 @@ public:
 	virtual void resizeElements();
 	virtual void rotateElements();
 	virtual void showMenu();
-	
+	virtual sf::FloatRect getBounds();
 };
 

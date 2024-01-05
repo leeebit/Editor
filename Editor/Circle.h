@@ -4,7 +4,7 @@
 class Circle : public MyFigures{
 private:
 	sf::CircleShape* circleShape;
-	float radius = 50.0;
+	sf::RectangleShape* squareShape;
 
 public:
 	Circle();
@@ -18,7 +18,7 @@ public:
 	sf::CircleShape& getCircleShape();
 	void setTransparency(const sf::Color& color, int transparency);
 	void showMenu(); //меню характеристик, что можно сделать с элементом
-
+	sf::FloatRect getBounds();
 	
 };
 
