@@ -1,17 +1,13 @@
 #pragma once
-#include "MyFigures.h"
-class Triangle : public MyFigures {
+#include "Elements.h"
+class Triangle : public Elements {
 private:
 	sf::ConvexShape triangleShape;
-	const int TRIANGLE = 2;
 public:
 	void drawElements();
-	void moveElements();
-	void resizeElements();
-	void rotateElements();
+	void moveElements(float offsetX, float offsetY) override;
+	void resizeElements(float amount) override;
 	void fillColorFigure();
 	void fillColorOutlineFigure();
-	void changeTrancperencyFigure();
-
 };
 

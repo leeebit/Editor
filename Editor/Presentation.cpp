@@ -104,6 +104,6 @@ int Presentation::DeleteSlideAtIndex(int index) {
 	}
 
 	if (slideCount > 0)
-		return slideCount - 1;
+		 return slideCount - 1;
 	return slideCount;
 }

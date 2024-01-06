@@ -59,7 +59,9 @@ void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 
 				// Проверяем, попадает ли щелчок мыши внутрь границ элемента
 				if (elementBounds.contains(mousePosition)) {
-					currentSlide->setCurrentElement(elements[i]);
+					selectedElement = elements[i];
+					currentSlide->setCurrentElement(selectedElement);
+
 					std::cout << "Current element is: " << i << std::endl;
 					break;
 				}
@@ -91,9 +93,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 	deleteSlideText.setFillColor(Color::Black);
 	deleteSlideText.setPosition(320, 20);
 
-	/*Text copySlideText("Copy slide", font, 20);
-	copySlideText.setFillColor(Color::Black);
-	copySlideText.setPosition(500, 20);*/
+	Text changeElementText("ChangeElement", font, 20);
+	changeElementText.setFillColor(Color::Black);
+	changeElementText.setPosition(500, 20);
 
 	Text createElementText("Create element", font, 20);
 	createElementText.setFillColor(Color::Black);
@@ -140,12 +142,12 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 	createElementPropertiesWindow.setPosition((window.getSize().x - createElementPropertiesWindow.getSize().x) / 2, (window.getSize().y - createElementPropertiesWindow.getSize().y) / 2);
 	window.draw(createElementPropertiesWindow);
 
-	sf::Text colorFillButton("Circle", font, 20);
+	sf::Text colorFillButton("Fill Color", font, 20);
 	colorFillButton.setFillColor(sf::Color::Black);
 	colorFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 20);
 	window.draw(colorFillButton);
 
-	sf::Text outlineFillButton("Square", font, 20);
+	sf::Text outlineFillButton("fill Color Outline", font, 20);
 	outlineFillButton.setFillColor(sf::Color::Black);
 	outlineFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 60);
 	window.draw(outlineFillButton);
@@ -198,6 +200,12 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						}
 
 					}
+					else if (changeElementText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+						std::cout << "Clicked Change Elements!" << std::endl;
+						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount() && selectedElement != nullptr) {
+							isChangeElementPropertiesMenuActive = true;
+						}
+					}
 					else if (isCreateElementMenuActive) {
 						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 						sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
@@ -218,7 +226,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							isCreateElementMenuActive = false;
 						}
 					}
-
+					 
 					else if (isElementTypeChosen) {
 						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 						sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
@@ -229,6 +237,14 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							currentSlide->createElements(worldMousePos);
 						}
 						isElementTypeChosen = false;
+					}
+					else if (isChangeElementPropertiesMenuActive) {
+						Vector2f mousePos = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+						if (colorFillButton.getGlobalBounds().contains(mousePos) || outlineFillButton.getGlobalBounds().contains(mousePos)) {
+							std::cout << selectedElement << std::endl;
+							isColorPickerActive = true;
+							isChangeElementPropertiesMenuActive = false;// Открываем меню палитры цветов
+						}
 					}
 
 					else if (deleteSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -246,8 +262,12 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						// Обработка выбора цвета из диалогового окна
 						for (int i = 0; i < 36; ++i) {
 							if (colorRectangles[i].getGlobalBounds().contains(mousePos)) {
-								chosenColorIndex = i;
+								if (selectedElement == nullptr)
+									chosenColorIndex = i;
+								else
+									presentation[0]->getSlides()[currentSlideIndex]->setChosenColorIndexElement(i);
 								break;
+
 							}
 						}
 
@@ -257,31 +277,53 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							presentation[0]->getSlides()[currentSlideIndex]->SetBackgroundColor(selectedColor);
 							isColorPickerActive = false; // Закрыть диалоговое окно после выбора цвета
 							chosenColorIndex = -1;
-							std::cout << currentSlideIndex << std::endl;
 						}
 						else
 							std::cout << "Background doesn't changed!" << std::endl;
+
+						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+							if(currentSlideIndex != -1){
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (currentSlide->getChosenColorIndexElement() != -1 && selectedElement != nullptr) {
+								sf::Color selectedColor = colorRectangles[currentSlide->getChosenColorIndexElement()].getFillColor();
+								Elements* currentElement = currentSlide->getCurrentElement();
+								//if (colorFillButton.getGlobalBounds().contains(mousePos)) {
+									currentElement->setfillColorFigure(selectedColor);
+								//}
+								//else if (outlineFillButton.getGlobalBounds().contains(mousePos)) {
+									currentElement->setfillColorOutlineFigure(selectedColor);
+								//}
+								
+								isColorPickerActive = false;
+								currentSlide->setChosenColorIndexElement(-1);
+								std::cout << currentElement << std::endl;
+							}
+							}
+						}
+						break;
 					}
 				}
-				else if (event.mouseButton.button == Mouse::Right) {
-					Vector2i mousePos = Mouse::getPosition(window);
-					if (presentation != nullptr) {
-						Slide** slides = presentation[0]->getSlides();
-						if (slides != nullptr) {
-							for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
-								if (slides[i]->getBackground().getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-									isColorPickerActive = true;
-									break;
+					else if (event.mouseButton.button == Mouse::Right) {
+						Vector2i mousePos = Mouse::getPosition(window);
+						if (presentation != nullptr) {
+							Slide** slides = presentation[0]->getSlides();
+							if (slides != nullptr) {
+								selectedElement = nullptr;
+								for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
+									if (slides[i]->getBackground().getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+										isColorPickerActive = true;
+										break;
+									}
 								}
 							}
 						}
 					}
-				}
-				break;
+					break;
 
 			case Event::KeyPressed:
 				if (event.key.code == Keyboard::A) {
 					if (currentSlideIndex > 0) {
+						selectedElement = nullptr;
 						currentSlideIndex--; // Переход на предыдущий слайд
 						std::cout << "Switch to previous slide. Current slide: " << currentSlideIndex << std::endl;
 					}
@@ -290,70 +332,140 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					if (presentation != nullptr) {
 						int totalSlides = presentation[0]->getSlideCount();
 						if (currentSlideIndex < totalSlides - 1) {
+							selectedElement = nullptr;
 							currentSlideIndex++; // Переход на следующий слайд
 							std::cout << "Switch to next slide. Current slide: " << currentSlideIndex << std::endl;
 						}
 					}
 				}
-				break;
+				else if (event.key.code == Keyboard::Up) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
 
-			}
-		}
+								Elements* currentElement = currentSlide->getCurrentElement();
+								// Перемещение элемента вверх (уменьшение координаты Y)
+								currentElement->moveElements(0, -10);
 
-		window.clear({ 255, 255, 255 });
-		window.draw(Menu);
-		window.draw(createPresentationText);
-		window.draw(createSlideText);
-		window.draw(deleteSlideText);
-		window.draw(createElementText);
-		window.draw(deleteElementText);
-
-		// Отрисовка всех слайдов, если они есть
-		if (presentation != nullptr) {
-			Slide** slides = presentation[0]->getSlides();
-			if (slides != nullptr) {
-				for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
-					slides[i]->Draw(window);
+							}
+						}
+					}
 				}
+				else if (event.key.code == Keyboard::Down) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
+								// Перемещение элемента вниз (увеличение координаты Y)
+								selectedElement->moveElements(0, 10);
+							}
+						}
+					}
+				}
+				else if (event.key.code == Keyboard::Left) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
+								// Перемещение элемента влево (уменьшение координаты X)
+								selectedElement->moveElements(-10, 0);
+							}
+						}
+					}
+				}
+				else if (event.key.code == Keyboard::Right) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
+								// Перемещение элемента вправо (увеличение координаты X)
+								selectedElement->moveElements(10, 0);
+							}
+						}
+					}
+				}
+				else if (event.key.code == Keyboard::W) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
+								selectedElement->resizeElements(10);
+							}
+						}
+					}
+				}
+				else if (event.key.code == Keyboard::S) {
+					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (currentSlideIndex != -1) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							if (selectedElement != nullptr) {
+								selectedElement->resizeElements(-10);
+							}
+						}
+					}
+				}
+				break;
 			}
 		}
 
-		if (presentation != nullptr) {
-			Slide** slides = presentation[0]->getSlides();
-			if (slides != nullptr && currentSlideIndex >= 0 && currentSlideIndex <= presentation[0]->getSlideCount()) {
-				window.draw(slides[currentSlideIndex]->getBackground());
 
-				Elements** elements = slides[currentSlideIndex]->getElements();
-				if (elements != nullptr) {
-					for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); ++i) {
-						elements[i]->drawElements(window);
+			window.clear({ 255, 255, 255 });
+			window.draw(Menu);
+			window.draw(createPresentationText);
+			window.draw(createSlideText);
+			window.draw(changeElementText);
+			window.draw(deleteSlideText);
+			window.draw(createElementText);
+			window.draw(deleteElementText);
+
+			// Отрисовка всех слайдов, если они есть
+			if (presentation != nullptr) {
+				Slide** slides = presentation[0]->getSlides();
+				if (slides != nullptr) {
+					for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
+						slides[i]->Draw(window);
 					}
 				}
 			}
-		}
 
+			if (presentation != nullptr) {
+				Slide** slides = presentation[0]->getSlides();
+				if (slides != nullptr && currentSlideIndex >= 0 && currentSlideIndex <= presentation[0]->getSlideCount()) {
+					window.draw(slides[currentSlideIndex]->getBackground());
 
-		if (isColorPickerActive) {
-			window.draw(colorPickerDialog);
-			for (int i = 0; i < 36; ++i) {
-				window.draw(colorRectangles[i]);
+					Elements** elements = slides[currentSlideIndex]->getElements();
+					if (elements != nullptr) {
+						for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); ++i) {
+							elements[i]->drawElements(window);
+						}
+					}
+				}
 			}
-		}
 
-		if (isCreateElementMenuActive) {
-			window.draw(createElementWindow);
-			window.draw(circleButton);
-			window.draw(squareButton);
-			window.draw(triangleButton);
-		}
 
-		if (isChangeElementPropertiesMenuActive) {
-			window.draw(createElementPropertiesWindow);
-			window.draw(colorFillButton);
-			window.draw(outlineFillButton);
+			if (isColorPickerActive) {
+				window.draw(colorPickerDialog);
+				for (int i = 0; i < 36; ++i) {
+					window.draw(colorRectangles[i]);
+				}
+			}
+
+			if (isCreateElementMenuActive) {
+				window.draw(createElementWindow);
+				window.draw(circleButton);
+				window.draw(squareButton);
+				window.draw(triangleButton);
+			}
+
+			if (isChangeElementPropertiesMenuActive) {
+				window.draw(createElementPropertiesWindow);
+				window.draw(colorFillButton);
+				window.draw(outlineFillButton);
+			}
+			window.display();
 		}
-		window.display();
 	}
-}
+
 
 

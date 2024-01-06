@@ -2,13 +2,9 @@
 
 void Elements::drawElements(sf::RenderWindow& window) {}
 
-void Elements::moveElements() {}
+void Elements::setfillColorFigure(const sf::Color& color){}
 
-void Elements::resizeElements() {}
-
-void Elements::rotateElements() {}
-
-void Elements::showMenu() {};
+void Elements::setfillColorOutlineFigure(const sf::Color& color){}
 
 sf::FloatRect Elements::getBounds() {
 	return sf::FloatRect();

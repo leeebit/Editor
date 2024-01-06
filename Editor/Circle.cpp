@@ -3,26 +3,26 @@
 Circle::Circle(const sf::Vector2f& position) {
 
 	// Создание квадрата
-	squareShape = new sf::RectangleShape(sf::Vector2f(100, 100));
-	squareShape->setFillColor(sf::Color::Transparent);
-	squareShape->setOutlineColor(sf::Color::Green);
-	squareShape->setOutlineThickness(2);
-	squareShape->setPosition(position); // Позиция квадрата
+	//squareShape = new sf::RectangleShape(sf::Vector2f(100, 100));
+	//squareShape->setFillColor(sf::Color::Transparent);
+	//squareShape->setOutlineColor(sf::Color::Green);
+	//squareShape->setOutlineThickness(2);
+	//squareShape->setPosition(position); // Позиция квадрата
 
 	// Создание круга
 	circleShape = new sf::CircleShape(50); // Радиус круга по умолчанию
 	circleShape->setFillColor(sf::Color::Blue); // Цвет заливки круга
 	circleShape->setOutlineColor(sf::Color::Red); // Цвет обводки круга
 	circleShape->setOutlineThickness(2); // Толщина обводки круга
-
+	circleShape->setPosition(position);
 	// Устанавливаем позицию круга внутри квадрата (в центре квадрата)
-	sf::FloatRect circleBounds = circleShape->getGlobalBounds();
+	/*sf::FloatRect circleBounds = circleShape->getGlobalBounds();
 	sf::FloatRect squareBounds = squareShape->getGlobalBounds();
 
 	float circleX = squareBounds.left + (squareBounds.width - circleBounds.width) / 2;
 	float circleY = squareBounds.top + (squareBounds.height - circleBounds.height) / 2;
 
-	circleShape->setPosition(circleX, circleY);
+	circleShape->setPosition(circleX, circleY);*/
 }
 
 Circle::~Circle() {
@@ -45,17 +45,12 @@ void Circle::getfillColorOutlineFigure(const sf::Color& color) {
 	circleShape->getOutlineColor();
 };
 
-
 sf::CircleShape& Circle::getCircleShape() {
 	return *circleShape;
 }
 
-void Circle::setTransparency(const sf::Color& color, int transparency) {
-
-};
-
 void Circle::drawElements(sf::RenderWindow& window) {
-	window.draw(*squareShape);
+	/*window.draw(*squareShape);*/
 	window.draw(*circleShape);
 };
 
@@ -63,11 +58,67 @@ sf::FloatRect Circle::getBounds() {
 	return circleShape->getGlobalBounds();
 };
 
-void Circle::showMenu() {};
+void Circle::moveElements(float offsetX, float offsetY) {
+	sf::Vector2f currentPos = circleShape->getPosition();
 
-void Circle::moveElements() {};
+	// Изменяем координаты круга в соответствии с заданным смещением
+	currentPos.x += offsetX;
+	currentPos.y += offsetY;
 
-void Circle::resizeElements() {};
+	// Ограничиваем координаты элемента в пределах слайда
+	if (currentPos.x < 100) {
+		currentPos.x = 100;
+	}
+	else if (currentPos.x + circleShape->getGlobalBounds().width > + 900) {
+		currentPos.x = 900 - circleShape->getGlobalBounds().width;
+	}
 
-void Circle::rotateElements() {};
+	if (currentPos.y < 125) {
+		currentPos.y = 125;
+	}
+	else if (currentPos.y + circleShape->getGlobalBounds().height > 575) {
+		currentPos.y = 575 - circleShape->getGlobalBounds().height;
+	}
+
+	// Устанавливаем новые координаты круга
+	circleShape->setPosition(currentPos);
+};
+
+void Circle::resizeElements(float amount) {
+	float currentRadius = circleShape->getRadius();
+	sf::Vector2f currentPos = circleShape->getPosition();
+
+	float newRadius = currentRadius + amount;
+
+	// Ограничение размера, чтобы он оставался в заданных пределах
+	if (newRadius > 100) {
+		newRadius = 100;
+	}
+	else if (newRadius < 10) {
+		newRadius = 10;
+	}
+
+	// Определение знака и изменение размера в зависимости от этого
+	if (amount > 0) {
+		// Увеличение размера
+		circleShape->setRadius(newRadius);
+
+		// Пересчет позиции, чтобы элемент оставался в пределах окна
+		if (currentPos.x + newRadius > 800) {
+			currentPos.x = 800 - newRadius;
+		}
+		if (currentPos.y + newRadius > 450) {
+			currentPos.y = 450 - newRadius;
+		}
+	}
+	else if (amount < 0) {
+		// Уменьшение размера
+		circleShape->setRadius(newRadius);
+	}
+
+	circleShape->setPosition(currentPos);
+}
+
+
+
 

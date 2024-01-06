@@ -30,6 +30,13 @@ Elements** Slide::getElements() {
 	return elements;
 }
 
+int Slide::getChosenColorIndexElement(){
+	return chosenColorIndexElement;
+}
+void Slide::setChosenColorIndexElement(int index){
+	chosenColorIndexElement = index;
+}
+
 int Slide::getElementCount() {
 	return elementCount;
 }
@@ -56,6 +63,7 @@ void Slide::createElements(const sf::Vector2f& clickPosition) {
 		else if (elementType == TRIANGLE) {
 			elements[0] = new Triangle();
 		}
+		
 		std::cout << "Element added to the slide!" << std::endl;
 	}
 	else {

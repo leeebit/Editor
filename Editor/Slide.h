@@ -9,7 +9,8 @@
 enum ElementType {
 	CIRCLE = 0,
 	SQUARE = 1,
-	TRIANGLE = 2
+	TRIANGLE = 2,
+	IMAGE = 3
 };
 
 class Slide
@@ -20,13 +21,15 @@ private:
 	int elementCount;
 	int elementType;
 	Elements* currentElement;
-
+	int chosenColorIndexElement = -1;
 public:
 	Slide();
 	~Slide();
 	void createElements(const sf::Vector2f& clickPosition);
 	void SetBackgroundColor(const sf::Color& color);
 	int getElementType() const;
+	int getChosenColorIndexElement();
+	void setChosenColorIndexElement(int index);
 	void setElementType(int type);
 	Elements** getElements();
 	void setCurrentElement(Elements* element);

@@ -1,21 +1,18 @@
 #pragma once
-#include "MyFigures.h"
-class Square : public MyFigures {
+#include "Elements.h"
+class Square : public Elements {
 private:
 	sf::RectangleShape* squareShape;
 	float side = 50.0;
-	const int SQUARE = 1;
 public:
 	Square(const sf::Vector2f& position);
 	~Square();
-	void drawElements(sf::RenderWindow& window);
-	void moveElements();
-	void resizeElements();
-	void rotateElements();
-	void fillColorFigure(const sf::Color& color);
-	void fillColorOutlineFigure(const sf::Color& color);
+	void drawElements(sf::RenderWindow& window)override;
+	void moveElements(float offsetX, float offsetY) override;
+	void resizeElements(float amount) override;
+	void setfillColorFigure(const sf::Color& color) override;
+	void setfillColorOutlineFigure(const sf::Color& color) override;
 	sf::RectangleShape& getSquareShape();
-	void changeTrancperencyFigure();
 	sf::FloatRect getBounds();
 };
 

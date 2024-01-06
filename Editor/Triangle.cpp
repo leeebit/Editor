@@ -3,12 +3,9 @@ void Triangle::fillColorFigure() {};
 
 void Triangle::fillColorOutlineFigure() {};
 
-void Triangle::changeTrancperencyFigure() {};
-
 void Triangle::drawElements() {};
 
-void Triangle::moveElements() {};
+void Triangle::moveElements(float offsetX, float offsetY){};
 
-void Triangle::resizeElements() {};
+void Triangle::resizeElements(float amount){};
 
-void Triangle::rotateElements() {};

@@ -32,6 +32,7 @@ private:
 	bool isChangeElementPropertiesMenuActive = false;
 	bool isElementTypeChosen = false;
 	ElementType chosenElementType;
+	Elements* selectedElement = nullptr;
 
 public:
 	GraphicEditor();
@@ -42,6 +43,5 @@ public:
 	void setCurrentSlideIndex(int a);
 	void CreatePresentation();
 	void handleMouseClickOnElement(sf::Vector2f mousePosition);
-	void showContextMenu();
 };
 

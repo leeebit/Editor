@@ -1,4 +1,5 @@
 #include "Square.h"
+#include <algorithm>
 
 Square::Square(const sf::Vector2f& position) {
   
@@ -16,11 +17,11 @@ Square::~Square() {
 	delete squareShape;
 }
 
-void Square::fillColorFigure(const sf::Color& color){
+void Square::setfillColorFigure(const sf::Color& color){
 	squareShape->setFillColor(color);
 };
 
-void Square::fillColorOutlineFigure(const sf::Color& color){
+void Square::setfillColorOutlineFigure(const sf::Color& color){
 	squareShape->setOutlineColor(color);
 };
 
@@ -32,16 +33,72 @@ sf::FloatRect Square::getBounds() {
     return squareShape->getGlobalBounds();
 };
 
-void Square::changeTrancperencyFigure(){};
-
 void Square::drawElements(sf::RenderWindow& window){
 	window.draw(*squareShape);
 };
 
-void Square::moveElements(){};
+void Square::moveElements(float offsetX, float offsetY){
+	sf::Vector2f currentPos = squareShape->getPosition();
 
-void Square::resizeElements(){};
+	// »змен€ем координаты круга в соответствии с заданным смещением
+	currentPos.x += offsetX;
+	currentPos.y += offsetY;
 
-void Square::rotateElements(){};
+	// ѕровер€ем, не выходит ли круг за пределы слайда
+	if (currentPos.x < 100) {
+		currentPos.x = 100;
+	}
+	else if (currentPos.x + squareShape->getGlobalBounds().width > 900) {
+		currentPos.x = 900 - squareShape->getGlobalBounds().width;
+	}
+
+	if (currentPos.y < 125) {
+		currentPos.y = 125;
+	}
+	else if (currentPos.y + squareShape->getGlobalBounds().height > 575) {
+		currentPos.y = 575 - squareShape->getGlobalBounds().height;
+	}
+
+	// ”станавливаем новые координаты круга
+	squareShape->setPosition(currentPos);
+};
+
+void Square::resizeElements(float amount) {
+
+    sf::Vector2f size = squareShape->getSize();
+    sf::Vector2f currentPos = squareShape->getPosition();
+
+    if (amount > 0) {
+        // ”величиваем размер
+        size.x += amount;
+        size.y += amount;
+    }
+    else if (amount < 0) {
+        // ”меньшаем размер
+        float absoluteAmount = std::abs(amount);
+        size.x -= absoluteAmount;
+        size.y -= absoluteAmount;
+    }
+
+    if (size.x > 150 || size.x < 10) {
+        // ќграничиваем размер, если он превышает максимальное или минимальное значение
+        size.x = std::max(10.0f, std::min(150.0f, size.x));
+        size.y = std::max(10.0f, std::min(150.0f, size.y));
+    }
+
+    squareShape->setSize(size);
+
+    // ѕересчитываем позицию, если необходимо, чтобы элемент оставалс€ в пределах окна
+    // ѕример проверки дл€ квадрата
+    if (currentPos.x + size.x > 800) {
+        currentPos.x = 800 - size.x;
+    }
+    if (currentPos.y + size.y > 450) {
+        currentPos.y = 450 - size.y;
+    }
+
+    squareShape->setPosition(currentPos);
+};
+
 
 
