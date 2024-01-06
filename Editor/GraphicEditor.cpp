@@ -4,6 +4,8 @@ using namespace sf;
 
 GraphicEditor::GraphicEditor() {
 	presentation = nullptr;
+	presentationCount = 0;
+	currentSlideIndex = -1;
 }
 
 GraphicEditor::~GraphicEditor() {
@@ -53,22 +55,18 @@ void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 		if (elements != nullptr) {
 			for (int i = currentSlide->getElementCount() - 1; i >= 0; --i) {
 				// Получаем границы текущего элемента
-				sf::FloatRect elementBounds = elements[i]->getBounds();
+				FloatRect elementBounds = elements[i]->getBounds();
 
 				// Проверяем, попадает ли щелчок мыши внутрь границ элемента
 				if (elementBounds.contains(mousePosition)) {
-					// Устанавливаем элемент в качестве текущего
 					currentSlide->setCurrentElement(elements[i]);
-
-					std::string elementTypeString = currentSlide->getTypeAsString(elementType);
-					std::cout << "Ваш элемент стал текущим. Тип элемента: " << elementTypeString << std::endl;
+					std::cout << "Current element is: " << i << std::endl;
 					break;
 				}
 			}
 		}
 	}
 }
-
 
 void GraphicEditor::App(sf::RenderWindow& window) {
 
@@ -172,6 +170,8 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			case Event::MouseButtonPressed:
 				if (event.mouseButton.button == Mouse::Left) {
 					Vector2i mousePos = Mouse::getPosition(window);
+					Vector2f mousePosition = window.mapPixelToCoords(mousePos);
+					handleMouseClickOnElement(mousePosition);
 					if (createPresentationText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Presentation!" << std::endl;
 						// Логика для создания презентации
@@ -200,28 +200,37 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 					else if (isCreateElementMenuActive) {
 						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+						sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
+
 						if (circleButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-							std::cout << "Clicked Circle!" << std::endl;
-							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
-								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getCircleType());
-								isCreateElementMenuActive = false;
-							}
+							isElementTypeChosen = true;
+							chosenElementType = CIRCLE;
+							isCreateElementMenuActive = false;
 						}
 						else if (squareButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-							std::cout << "Clicked Square!" << std::endl;
-							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
-								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getSquareType());
-								isCreateElementMenuActive = false;
-							}
+							isElementTypeChosen = true;
+							chosenElementType = SQUARE;
+							isCreateElementMenuActive = false;
 						}
 						else if (triangleButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-							std::cout << "Clicked Triangle!" << std::endl;
-							if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
-								presentation[0]->getSlides()[currentSlideIndex]->createElements(Slide::getTriangleType());
-								isCreateElementMenuActive = false;
-							}
+							isElementTypeChosen = true;
+							chosenElementType = TRIANGLE;
+							isCreateElementMenuActive = false;
 						}
 					}
+
+					else if (isElementTypeChosen) {
+						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+						sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
+						// Обработка клика на слайде для создания элемента выбранного типа
+						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							currentSlide->setElementType(chosenElementType);
+							currentSlide->createElements(worldMousePos);
+						}
+						isElementTypeChosen = false;
+					}
+
 					else if (deleteSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						if (presentation != nullptr) {
 							std::cout << "Clicked Delete Slide!" << std::endl;

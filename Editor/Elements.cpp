@@ -1,14 +1,18 @@
 #include "Elements.h"
 
-void Elements::drawElements(sf::RenderWindow& window){}
+void Elements::drawElements(sf::RenderWindow& window) {}
 
-void Elements::moveElements(){}
+void Elements::moveElements() {}
 
-void Elements::resizeElements(){}
+void Elements::resizeElements() {}
 
-void Elements::rotateElements(){}
+void Elements::rotateElements() {}
 
-void Elements::showMenu(){};
+void Elements::showMenu() {};
 
-sf::FloatRect Elements::getBounds(){};
+sf::FloatRect Elements::getBounds() {
+	return sf::FloatRect();
+};
+
+
 

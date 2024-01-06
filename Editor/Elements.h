@@ -6,7 +6,8 @@
 class Elements
 {
 private:
-	float x, y; //позиция на слайде
+	float x, y;//позиция на слайде
+
 public:
 	virtual void drawElements(sf::RenderWindow& window);
 	virtual void moveElements();
@@ -14,5 +15,6 @@ public:
 	virtual void rotateElements();
 	virtual void showMenu();
 	virtual sf::FloatRect getBounds();
+
 };
 

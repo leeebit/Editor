@@ -14,21 +14,20 @@ enum ElementType {
 
 class Slide
 {
-private: 
+private:
 	Elements** elements;
-    sf::RectangleShape* background;
+	sf::RectangleShape* background;
 	int elementCount;
+	int elementType;
 	Elements* currentElement;
-	
-public: 
+
+public:
 	Slide();
-	~Slide(); 
-	void createElements(int selectedFigure);
-	std::string getTypeAsString(int elementType);
+	~Slide();
+	void createElements(const sf::Vector2f& clickPosition);
 	void SetBackgroundColor(const sf::Color& color);
-	static int getCircleType();
-	static int getSquareType();
-	static int getTriangleType();
+	int getElementType() const;
+	void setElementType(int type);
 	Elements** getElements();
 	void setCurrentElement(Elements* element);
 	Elements* getCurrentElement();

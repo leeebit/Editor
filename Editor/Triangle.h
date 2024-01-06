@@ -1,6 +1,6 @@
 #pragma once
 #include "MyFigures.h"
-class Triangle : public MyFigures{
+class Triangle : public MyFigures {
 private:
 	sf::ConvexShape triangleShape;
 	const int TRIANGLE = 2;
@@ -12,6 +12,6 @@ public:
 	void fillColorFigure();
 	void fillColorOutlineFigure();
 	void changeTrancperencyFigure();
-	
+
 };
 

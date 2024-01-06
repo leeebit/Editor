@@ -1,6 +1,7 @@
 #include "Square.h"
 
-Square::Square() {
+Square::Square(const sf::Vector2f& position) {
+  
     this->side = side; // Сохраняем длину стороны
 
     squareShape = new sf::RectangleShape();
@@ -8,7 +9,7 @@ Square::Square() {
     squareShape->setFillColor(sf::Color::Blue); // Цвет заливки квадрата
     squareShape->setOutlineColor(sf::Color::Red); // Цвет обводки квадрата
     squareShape->setOutlineThickness(2); // Толщина обводки квадрата
-    squareShape->setPosition(100, 125); // Позиция квадрата на экране (можно изменить)
+    squareShape->setPosition(position); // Позиция квадрата на экране (можно изменить)
 }
 
 Square::~Square() {
