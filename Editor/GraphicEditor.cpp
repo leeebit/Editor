@@ -25,7 +25,7 @@ void GraphicEditor::CreatePresentation() {
 	}
 	else {
 		Presentation** temp = new Presentation * [presentationCount + 1];
-		for (int i = 0; i < presentationCount; ++i) {
+		for (int i = 0; i < presentationCount; i++) {
 			temp[i] = presentation[i];
 		}
 		temp[presentationCount] = new Presentation();
@@ -53,7 +53,7 @@ void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 		// Получаем элементы текущего слайда
 		Elements** elements = currentSlide->getElements();
 		if (elements != nullptr) {
-			for (int i = currentSlide->getElementCount() - 1; i >= 0; --i) {
+			for (int i = currentSlide->getElementCount() - 1; i >= 0; i--) {
 				// Получаем границы текущего элемента
 				FloatRect elementBounds = elements[i]->getBounds();
 
@@ -260,7 +260,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						Vector2f mousePos = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
 
 						// Обработка выбора цвета из диалогового окна
-						for (int i = 0; i < 36; ++i) {
+						for (int i = 0; i < 36; i++) {
 							if (colorRectangles[i].getGlobalBounds().contains(mousePos)) {
 								if (selectedElement == nullptr)
 									chosenColorIndex = i;
@@ -309,7 +309,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							Slide** slides = presentation[0]->getSlides();
 							if (slides != nullptr) {
 								selectedElement = nullptr;
-								for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
+								for (int i = 0; i < presentation[0]->getSlideCount(); i++) {
 									if (slides[i]->getBackground().getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 										isColorPickerActive = true;
 										break;
@@ -423,7 +423,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			if (presentation != nullptr) {
 				Slide** slides = presentation[0]->getSlides();
 				if (slides != nullptr) {
-					for (int i = 0; i < presentation[0]->getSlideCount(); ++i) {
+					for (int i = 0; i < presentation[0]->getSlideCount(); i++) {
 						slides[i]->Draw(window);
 					}
 				}
@@ -436,7 +436,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 
 					Elements** elements = slides[currentSlideIndex]->getElements();
 					if (elements != nullptr) {
-						for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); ++i) {
+						for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); i++) {
 							elements[i]->drawElements(window);
 						}
 					}
@@ -446,7 +446,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 
 			if (isColorPickerActive) {
 				window.draw(colorPickerDialog);
-				for (int i = 0; i < 36; ++i) {
+				for (int i = 0; i < 36; i++) {
 					window.draw(colorRectangles[i]);
 				}
 			}

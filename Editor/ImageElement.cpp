@@ -1,4 +1,8 @@
 #include "ImageElement.h"
+
+ImageElement::ImageElement() {};
+ImageElement::~ImageElement() {};
+
 bool ImageElement::loadFromFile(const std::string& filename) {
     if (!texture.loadFromFile(filename)) {
         std::cerr << "Failed to load image from file: " << filename << std::endl;

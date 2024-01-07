@@ -6,6 +6,8 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 public:
+	ImageElement();
+	~ImageElement();
 	bool loadFromFile(const std::string& filename);
 	void drawElements(sf::RenderWindow& window) override;
 	void moveElements(float offsetX, float offsetY)override;
