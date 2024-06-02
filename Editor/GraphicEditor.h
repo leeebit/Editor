@@ -8,7 +8,7 @@
 class GraphicEditor {
 private:
 
-	Presentation** presentation;
+	std::vector<Presentation*> presentations;
 	int presentationCount;
 	sf::RectangleShape colorRectangles[36];
 	sf::Color colors[36] = {
@@ -25,7 +25,7 @@ private:
 	sf::Color(222, 184, 135), sf::Color(70, 130, 180), sf::Color(255, 250, 205),
 	sf::Color(34, 139, 34), sf::Color(102, 205, 170), sf::Color(255, 215, 0)
 	};
-	int currentSlideIndex;
+	int currentSlideIndex = 1;
 	int chosenColorIndex = -1;
 	bool isColorPickerActive = false;
 	bool isCreateElementMenuActive = false;
@@ -43,5 +43,6 @@ public:
 	void setCurrentSlideIndex(int a);
 	void CreatePresentation();
 	void handleMouseClickOnElement(sf::Vector2f mousePosition);
+	bool on_click_Button1();
 };
 

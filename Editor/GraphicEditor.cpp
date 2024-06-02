@@ -1,39 +1,32 @@
 #include "GraphicEditor.h"
+#include "Button.h"
 #include <vector>
 using namespace sf;
 
-GraphicEditor::GraphicEditor() {
-	presentation = nullptr;
-	presentationCount = 0;
-	currentSlideIndex = -1;
-}
+GraphicEditor::GraphicEditor(){}
 
 GraphicEditor::~GraphicEditor() {
-	if (presentation != nullptr) {
-		for (int i = 0; i < presentationCount; ++i) {
-			delete presentation[i];
-		}
-		delete[] presentation;
-	}
+
 }
 
 void GraphicEditor::CreatePresentation() {
-	if (!presentation) {
-		presentation = new Presentation * [1];
-		presentation[0] = new Presentation();
-		currentSlideIndex = 0;
-	}
-	else {
-		Presentation** temp = new Presentation * [presentationCount + 1];
-		for (int i = 0; i < presentationCount; i++) {
-			temp[i] = presentation[i];
-		}
-		temp[presentationCount] = new Presentation();
+	Presentation* newPresentation = new Presentation();
+	presentations.push_back(newPresentation);
+	presentationCount = presentations.size() - 1;
+	currentSlideIndex = 0;
+	std::cout << "Presentation created. Total presentations: " << presentations.size() << std::endl;
+}
 
-		delete[] presentation;
-		presentation = temp;
+bool GraphicEditor::on_click_Button1() {
+
+	if (presentations.empty())
+	{
+		CreatePresentation();
+		std::cout << "Presentation is created!" << std::endl;
+		return true;
 	}
-	presentationCount++;
+	std::cout << "Presentation doesn't created!" << std::endl;
+	return false;
 }
 
 int GraphicEditor::getCurrentSlideIndex() {
@@ -45,25 +38,20 @@ void GraphicEditor::setCurrentSlideIndex(int a) {
 }
 
 void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
-	// Проверяем наличие презентации и корректный индекс слайда
-	if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
-		// Получаем текущий слайд
-		Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
-
-		// Получаем элементы текущего слайда
-		Elements** elements = currentSlide->getElements();
-		if (elements != nullptr) {
-			for (int i = currentSlide->getElementCount() - 1; i >= 0; i--) {
-				// Получаем границы текущего элемента
-				FloatRect elementBounds = elements[i]->getBounds();
-
-				// Проверяем, попадает ли щелчок мыши внутрь границ элемента
-				if (elementBounds.contains(mousePosition)) {
-					selectedElement = elements[i];
-					currentSlide->setCurrentElement(selectedElement);
-
-					std::cout << "Current element is: " << i << std::endl;
-					break;
+	if (!presentations.empty() && currentSlideIndex >= 0) {
+		Presentation* currentPresentation = presentations[presentationCount];
+		if (currentSlideIndex < currentPresentation->getSlides().size()) {
+			Slide* currentSlide = currentPresentation->getSlides()[currentSlideIndex];
+			std::vector<Elements*>& elements = currentSlide->getElements(); 
+			if (!elements.empty()) {
+				for (int i = elements.size() - 1; i >= 0; i--) {
+					FloatRect elementBounds = elements[i]->getBounds(); 
+					if (elementBounds.contains(mousePosition)) {
+						selectedElement = elements[i]; 
+						currentSlide->setCurrentElement(selectedElement); 
+						std::cout << "Current element is: " << i << std::endl;
+						break;
+					}
 				}
 			}
 		}
@@ -177,7 +165,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					if (createPresentationText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Presentation!" << std::endl;
 						// Логика для создания презентации
-						if (presentation == nullptr) {
+						if (presentations.empty()) {
 							CreatePresentation();
 							std::cout << "Presentation is created!" << std::endl;
 						}
@@ -186,23 +174,23 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					else if (createSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Slide!" << std::endl;
 						// Логика для создания слайда
-						if (presentation != nullptr) {
+						if (!presentations.empty()) {
 
-							currentSlideIndex = presentation[0]->CreateSlideAtIndex(currentSlideIndex); // Создаем слайд
-							std::cout << currentSlideIndex << std::endl;
+							currentSlideIndex = presentations[presentationCount]->CreateSlide(); // Создаем слайд
+							std::cout << "Slide is created" << std::endl;
 						}
 						else std::cout << "Slide doesn't created!" << std::endl;
 					}
 					else if (createElementText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Elements!" << std::endl;
-						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 							isCreateElementMenuActive = true;
 						}
 
 					}
 					else if (changeElementText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Change Elements!" << std::endl;
-						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount() && selectedElement != nullptr) {
+						if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size() && selectedElement != nullptr) {
 							isChangeElementPropertiesMenuActive = true;
 						}
 					}
@@ -231,8 +219,8 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 						sf::Vector2f worldMousePos = window.mapPixelToCoords(mousePos);
 						// Обработка клика на слайде для создания элемента выбранного типа
-						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+						if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							currentSlide->setElementType(chosenElementType);
 							currentSlide->createElements(worldMousePos);
 						}
@@ -248,10 +236,13 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 
 					else if (deleteSlideText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-						if (presentation != nullptr) {
+						if (!presentations.empty()) {
 							std::cout << "Clicked Delete Slide!" << std::endl;
-							currentSlideIndex = presentation[0]->DeleteSlideAtIndex(currentSlideIndex);
-							std::cout << currentSlideIndex << std::endl;
+							currentSlideIndex = (presentations)[presentationCount]->DeleteSlide();
+							if (currentSlideIndex > 0) {
+								currentSlideIndex--; 
+							}
+							std::cout << "Slide is deleted" << std::endl;
 						}
 						else std::cout << "Slide doesn't deleted!" << std::endl;
 					}
@@ -265,7 +256,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 								if (selectedElement == nullptr)
 									chosenColorIndex = i;
 								else
-									presentation[0]->getSlides()[currentSlideIndex]->setChosenColorIndexElement(i);
+									(presentations)[presentationCount]->getSlides()[currentSlideIndex]->setChosenColorIndexElement(i);
 								break;
 
 							}
@@ -274,16 +265,16 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						// Если был выбран цвет, применяем его к слайду
 						if (chosenColorIndex != -1 && currentSlideIndex != -1) {
 							sf::Color selectedColor = colorRectangles[chosenColorIndex].getFillColor();
-							presentation[0]->getSlides()[currentSlideIndex]->SetBackgroundColor(selectedColor);
+							(presentations)[presentationCount]->getSlides()[currentSlideIndex]->SetBackgroundColor(selectedColor);
 							isColorPickerActive = false; // Закрыть диалоговое окно после выбора цвета
 							chosenColorIndex = -1;
 						}
 						else
 							std::cout << "Background doesn't changed!" << std::endl;
 
-						if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+						if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 							if(currentSlideIndex != -1){
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (currentSlide->getChosenColorIndexElement() != -1 && selectedElement != nullptr) {
 								sf::Color selectedColor = colorRectangles[currentSlide->getChosenColorIndexElement()].getFillColor();
 								Elements* currentElement = currentSlide->getCurrentElement();
@@ -305,11 +296,11 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 				}
 					else if (event.mouseButton.button == Mouse::Right) {
 						Vector2i mousePos = Mouse::getPosition(window);
-						if (presentation != nullptr) {
-							Slide** slides = presentation[0]->getSlides();
-							if (slides != nullptr) {
+						if (!presentations.empty()) {
+							std::vector<Slide*>slides = (presentations)[presentationCount]->getSlides();
+							if (!slides.empty()) {
 								selectedElement = nullptr;
-								for (int i = 0; i < presentation[0]->getSlideCount(); i++) {
+								for (int i = 0; i < (presentations)[presentationCount]->getSlides().size(); i++) {
 									if (slides[i]->getBackground().getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 										isColorPickerActive = true;
 										break;
@@ -329,8 +320,8 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::D) {
-					if (presentation != nullptr) {
-						int totalSlides = presentation[0]->getSlideCount();
+					if (!presentations.empty()) {
+						int totalSlides = (presentations)[presentationCount]->getSlides().size();
 						if (currentSlideIndex < totalSlides - 1) {
 							selectedElement = nullptr;
 							currentSlideIndex++; // Переход на следующий слайд
@@ -339,9 +330,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::Up) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 
 								Elements* currentElement = currentSlide->getCurrentElement();
@@ -353,9 +344,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::Down) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 								// Перемещение элемента вниз (увеличение координаты Y)
 								selectedElement->moveElements(0, 10);
@@ -364,9 +355,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::Left) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 								// Перемещение элемента влево (уменьшение координаты X)
 								selectedElement->moveElements(-10, 0);
@@ -375,9 +366,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::Right) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 								// Перемещение элемента вправо (увеличение координаты X)
 								selectedElement->moveElements(10, 0);
@@ -386,9 +377,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::W) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 								selectedElement->resizeElements(10);
 							}
@@ -396,9 +387,9 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 					}
 				}
 				else if (event.key.code == Keyboard::S) {
-					if (presentation != nullptr && currentSlideIndex >= 0 && currentSlideIndex < presentation[0]->getSlideCount()) {
+					if (!presentations.empty() && currentSlideIndex >= 0 && currentSlideIndex < (presentations)[presentationCount]->getSlides().size()) {
 						if (currentSlideIndex != -1) {
-							Slide* currentSlide = presentation[0]->getSlides()[currentSlideIndex];
+							Slide* currentSlide = (presentations)[presentationCount]->getSlides()[currentSlideIndex];
 							if (selectedElement != nullptr) {
 								selectedElement->resizeElements(-10);
 							}
@@ -420,22 +411,22 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			window.draw(deleteElementText);
 
 			// Отрисовка всех слайдов, если они есть
-			if (presentation != nullptr) {
-				Slide** slides = presentation[0]->getSlides();
-				if (slides != nullptr) {
-					for (int i = 0; i < presentation[0]->getSlideCount(); i++) {
+			if (!presentations.empty()) {
+				std::vector<Slide*>slides = (presentations)[presentationCount]->getSlides();
+				if (!slides.empty()) {
+					for (int i = 0; i < (presentations)[presentationCount]->getSlides().size(); i++) {
 						slides[i]->Draw(window);
 					}
 				}
 			}
 
-			if (presentation != nullptr) {
-				Slide** slides = presentation[0]->getSlides();
-				if (slides != nullptr && currentSlideIndex >= 0 && currentSlideIndex <= presentation[0]->getSlideCount()) {
+			if (!presentations.empty()) {
+				std::vector<Slide*>slides = (presentations)[presentationCount]->getSlides();
+				if (!slides.empty() && currentSlideIndex >= 0 && currentSlideIndex <= (presentations)[presentationCount]->getSlides().size()) {
 					window.draw(slides[currentSlideIndex]->getBackground());
 
-					Elements** elements = slides[currentSlideIndex]->getElements();
-					if (elements != nullptr) {
+					std::vector<Elements*>& elements = slides[currentSlideIndex]->getElements();
+					if (!elements.empty()) {
 						for (int i = 0; i < slides[currentSlideIndex]->getElementCount(); i++) {
 							elements[i]->drawElements(window);
 						}
@@ -466,6 +457,3 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 			window.display();
 		}
 	}
-
-
-

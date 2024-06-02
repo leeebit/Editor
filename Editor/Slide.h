@@ -5,6 +5,7 @@
 #include "Triangle.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 
 enum ElementType {
 	CIRCLE = 0,
@@ -16,12 +17,12 @@ enum ElementType {
 class Slide
 {
 private:
-	Elements** elements;
-	sf::RectangleShape* background;
-	int elementCount;
+	std::vector<Elements*> elements;
+	sf::RectangleShape background;
 	int elementType;
 	Elements* currentElement;
 	int chosenColorIndexElement = -1;
+
 public:
 	Slide();
 	~Slide();
@@ -31,7 +32,7 @@ public:
 	int getChosenColorIndexElement();
 	void setChosenColorIndexElement(int index);
 	void setElementType(int type);
-	Elements** getElements();
+	std::vector<Elements*>& getElements();
 	void setCurrentElement(Elements* element);
 	Elements* getCurrentElement();
 	int getElementCount();
