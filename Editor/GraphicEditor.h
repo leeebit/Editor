@@ -39,6 +39,7 @@ public:
 	~GraphicEditor();
 	// void DeletePresentation();
 	void App(sf::RenderWindow& window);
+	bool on_presentation_clicked();
 	int getCurrentSlideIndex();
 	void setCurrentSlideIndex(int a);
 	void CreatePresentation();

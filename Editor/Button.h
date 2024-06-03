@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-typedef bool (* Action)();
+class GraphEditor;
+
+typedef bool (*GraphEditor::* Action)();
 
 class Button
 {

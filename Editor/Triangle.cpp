@@ -6,7 +6,7 @@ Triangle::Triangle(const sf::Vector2f& position, float baseLength, float height)
     triangleShape.setPoint(0, sf::Vector2f(0, 0));
     triangleShape.setPoint(1, sf::Vector2f(baseLength / 2, -height));
     triangleShape.setPoint(2, sf::Vector2f(baseLength, 0));
-    triangleShape.setFillColor(sf::Color::Blue); // Цвет заливки треугольника
+   triangleShape.setFillColor(sf::Color::Blue); // Цвет заливки треугольника
     triangleShape.setOutlineColor(sf::Color::Red); // Цвет обводки треугольника
     triangleShape.setOutlineThickness(2); // Толщина обводки треугольника
     triangleShape.setPosition(position); // Позиция треугольника на экране (можно изменить)
@@ -14,11 +14,13 @@ Triangle::Triangle(const sf::Vector2f& position, float baseLength, float height)
 
 void Triangle::drawElements(sf::RenderWindow& window) {
     window.draw(triangleShape);
+  
 }
 
 void Triangle::moveElements(float offsetX, float offsetY) {
     sf::Vector2f currentPos = triangleShape.getPosition();
 
+    std::cout << currentPos.x << " " << currentPos.y << "\n";
     // Изменяем координаты треугольника в соответствии с заданным смещением
     currentPos.x += offsetX;
     currentPos.y += offsetY;
@@ -31,11 +33,14 @@ void Triangle::moveElements(float offsetX, float offsetY) {
         currentPos.x = 900 - triangleShape.getGlobalBounds().width;
     }
 
-    if (currentPos.y < 125) {
-        currentPos.y = 125;
+    int baseline = 576;
+    if (currentPos.y - triangleShape.getGlobalBounds().height <= 125)
+    {
+        currentPos.y = 125 + triangleShape.getGlobalBounds().height;
     }
-    else if (currentPos.y + triangleShape.getGlobalBounds().height > 575) {
-        currentPos.y = 575 - triangleShape.getGlobalBounds().height;
+    else if (currentPos.y > baseline)
+    {
+        currentPos.y = baseline;
     }
 
     // Устанавливаем новые координаты треугольника

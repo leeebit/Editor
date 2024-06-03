@@ -34,6 +34,7 @@ void Circle::setfillColorFigure(const sf::Color& color) {
 };
 
 void Circle::setfillColorOutlineFigure(const sf::Color& color) {
+	std::cout << "1";
 	circleShape->setOutlineColor(color);
 };
 
@@ -64,23 +65,23 @@ void Circle::moveElements(float offsetX, float offsetY) {
 	// Изменяем координаты круга в соответствии с заданным смещением
 	currentPos.x += offsetX;
 	currentPos.y += offsetY;
-
+	
+	std::cout << currentPos.x << " " << currentPos.y << "\n";
 	// Ограничиваем координаты элемента в пределах слайда
 	if (currentPos.x < 100) {
 		currentPos.x = 100;
 	}
-	else if (currentPos.x + circleShape->getGlobalBounds().width > + 900) {
+	else if (currentPos.x + circleShape->getGlobalBounds().width > 900) {
 		currentPos.x = 900 - circleShape->getGlobalBounds().width;
 	}
 
-	if (currentPos.y < 125) {
-		currentPos.y = 125;
+	if (currentPos.y < 126) {
+		currentPos.y = 126;
 	}
 	else if (currentPos.y + circleShape->getGlobalBounds().height > 575) {
 		currentPos.y = 575 - circleShape->getGlobalBounds().height;
 	}
 
-	// Устанавливаем новые координаты круга
 	circleShape->setPosition(currentPos);
 };
 

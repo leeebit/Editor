@@ -15,8 +15,8 @@ void GraphicEditor::CreatePresentation() {
 	std::cout << "Presentation created. Total presentations: " << presentations.size() << std::endl;
 }
 
-bool GraphicEditor::on_click_Button1() {
-
+bool GraphicEditor::on_presentation_clicked()
+{
 	if (presentations.empty())
 	{
 		CreatePresentation();
@@ -70,9 +70,12 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 		std::cerr << "Error font load!\n";
 	}
 
+	std::vector<Button> buttons;
+
 	Text createPresentationText("Create presentation", font, 20);
 	createPresentationText.setFillColor(Color::Black);
 	createPresentationText.setPosition(20, 20);
+	buttons.push_back(Button((IntRect)createPresentationText.getGlobalBounds(), sf::Color::Black, &on_presentation_clicked));
 
 	Text createSlideText("Create slide", font, 20);
 	createSlideText.setFillColor(Color::Black);
@@ -136,7 +139,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 	colorFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 20);
 	window.draw(colorFillButton);
 
-	sf::Text outlineFillButton("fill Color Outline", font, 20);
+	sf::Text outlineFillButton("Fill Color Outline", font, 20);
 	outlineFillButton.setFillColor(sf::Color::Black);
 	outlineFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 60);
 	window.draw(outlineFillButton);
@@ -146,7 +149,8 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 		colorRectangles[i].setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2 + 20 + (i % 6) * 30, (window.getSize().y - colorPickerDialog.getSize().y) / 2 + 20 + (i / 6) * 30);
 		colorRectangles[i].setFillColor(colors[i]);
 	}
-
+	bool isColorOutlinerClicked = false;
+	bool isColorFillButtonClicked = false;
 	while (window.isOpen())
 	{
 		Event event;
@@ -162,6 +166,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 				if (event.mouseButton.button == Mouse::Left) {
 					Vector2i mousePos = Mouse::getPosition(window);
 					Vector2f mousePosition = window.mapPixelToCoords(mousePos);
+					std::cout << "Mouse coords: " << mousePos.x << " " << mousePos.y << "\n";
 					handleMouseClickOnElement(mousePosition);
 					if (createPresentationText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 						std::cout << "Clicked Create Presentation!" << std::endl;
@@ -231,6 +236,10 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						Vector2f mousePos = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
 						if (colorFillButton.getGlobalBounds().contains(mousePos) || outlineFillButton.getGlobalBounds().contains(mousePos)) {
 							std::cout << selectedElement << std::endl;
+							if (colorFillButton.getGlobalBounds().contains(mousePos))
+								isColorFillButtonClicked = true;
+							else if (outlineFillButton.getGlobalBounds().contains(mousePos))
+								isColorOutlinerClicked = true;
 							isColorPickerActive = true;
 							isChangeElementPropertiesMenuActive = false;// Открываем меню палитры цветов
 						}
@@ -279,14 +288,18 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 							if (currentSlide->getChosenColorIndexElement() != -1 && selectedElement != nullptr) {
 								sf::Color selectedColor = colorRectangles[currentSlide->getChosenColorIndexElement()].getFillColor();
 								Elements* currentElement = currentSlide->getCurrentElement();
-								//if (colorFillButton.getGlobalBounds().contains(mousePos)) {
+								std::cout << colorFillButton.getGlobalBounds().contains(mousePos) << " "
+									<< outlineFillButton.getGlobalBounds().contains(mousePos) << "\n";
+								if (isColorFillButtonClicked) {
 									currentElement->setfillColorFigure(selectedColor);
-								//}
-								//else if (outlineFillButton.getGlobalBounds().contains(mousePos)) {
+								}
+								else if (isColorOutlinerClicked) {
 									currentElement->setfillColorOutlineFigure(selectedColor);
-								//}
+								}
 								
 								isColorPickerActive = false;
+								isColorOutlinerClicked = false;
+								isColorFillButtonClicked = false;
 								currentSlide->setChosenColorIndexElement(-1);
 								std::cout << currentElement << std::endl;
 							}

@@ -13,7 +13,7 @@ bool Button::isClicked(sf::Vector2i mouse)
     return rect.contains(mouse);
 }
 
-void Button::setOnClick(Action a)
+void Button::setOnClick(function a)
 {
     click = a;
 }
