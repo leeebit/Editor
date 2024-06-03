@@ -1,81 +1,81 @@
 #include "Slide.h"
 
 Slide::Slide() {
-	background.setSize(sf::Vector2f(800, 450));
-	background.setFillColor(sf::Color::White);
-	background.setOutlineColor(sf::Color::Red);
-	background.setOutlineThickness(2);
-	background.setPosition(100, 125);
+    background.setSize(sf::Vector2f(800, 450));
+    background.setFillColor(sf::Color::White);
+    background.setOutlineColor(sf::Color::Red);
+    background.setOutlineThickness(2);
+    background.setPosition(100, 125);
 }
 
 Slide::~Slide() {
-	for (auto element : elements) {
-		delete element;
-	}
-	elements.clear();
+    for (auto element : elements) {
+        delete element;
+    }
+    elements.clear();
 }
 
 void Slide::setElementType(int type) {
-	elementType = type;
+    elementType = type;
 }
 
 int Slide::getElementType() const {
-	return elementType;
+    return elementType;
 }
 
 std::vector<Elements*>& Slide::getElements() {
-	return elements;
+    return elements;
 }
 
 int Slide::getChosenColorIndexElement() {
-	return chosenColorIndexElement;
+    return chosenColorIndexElement;
 }
 
 void Slide::setChosenColorIndexElement(int index) {
-	chosenColorIndexElement = index;
+    chosenColorIndexElement = index;
 }
 
 int Slide::getElementCount() {
-	return elements.size();
+    return elements.size();
 }
 
 void Slide::setCurrentElement(Elements* element) {
-	currentElement = element;
+    currentElement = element;
 }
 
 Elements* Slide::getCurrentElement() {
-	return currentElement;
+    return currentElement;
 }
 
 void Slide::createElements(const sf::Vector2f& clickPosition) {
-	Elements* newElement = nullptr;
-	if (elementType == CIRCLE) {
-		newElement = new Circle(clickPosition);
-	}
-	else if (elementType == SQUARE) {
-		newElement = new Square(clickPosition);
-	}
-	else if (elementType == TRIANGLE) {
-		newElement = new Triangle();
-	}
-	if (newElement) {
-		elements.push_back(newElement);
-		setCurrentElement(newElement);
-		std::cout << "Create Element index is " << elements.size() - 1 << " added to the slide!" << std::endl;
-	}
+    Elements* newElement = nullptr;
+    if (elementType == CIRCLE) {
+        newElement = new Circle(clickPosition);
+    }
+    else if (elementType == SQUARE) {
+        newElement = new Square(clickPosition);
+    }
+    else if (elementType == TRIANGLE) {
+        newElement = new Triangle(clickPosition);
+    }
+    if (newElement) {
+        elements.push_back(newElement);
+        setCurrentElement(newElement);
+        std::cout << "Create Element index is " << elements.size() - 1 << " added to the slide!" << std::endl;
+    }
 }
 
 void Slide::SetBackgroundColor(const sf::Color& color) {
-	background.setFillColor(color);
+    background.setFillColor(color);
 }
 
 sf::RectangleShape& Slide::getBackground() {
-	return background;
+    return background;
 }
 
 void Slide::Draw(sf::RenderWindow& window) {
-	window.draw(background);
-	for (auto element : elements) {
-		element->drawElements(window);
-	}
+    window.draw(background);
+    for (auto element : elements) {
+        element->drawElements(window);
+    }
 }

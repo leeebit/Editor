@@ -5,9 +5,7 @@ using namespace sf;
 
 GraphicEditor::GraphicEditor(){}
 
-GraphicEditor::~GraphicEditor() {
-
-}
+GraphicEditor::~GraphicEditor() {}
 
 void GraphicEditor::CreatePresentation() {
 	Presentation* newPresentation = new Presentation();
@@ -37,18 +35,20 @@ void GraphicEditor::setCurrentSlideIndex(int a) {
 	currentSlideIndex = a;
 }
 
+#include "GraphicEditor.h"
+#include <iostream>
+
 void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 	if (!presentations.empty() && currentSlideIndex >= 0) {
 		Presentation* currentPresentation = presentations[presentationCount];
 		if (currentSlideIndex < currentPresentation->getSlides().size()) {
 			Slide* currentSlide = currentPresentation->getSlides()[currentSlideIndex];
-			std::vector<Elements*>& elements = currentSlide->getElements(); 
+			std::vector<Elements*>& elements = currentSlide->getElements();
 			if (!elements.empty()) {
 				for (int i = elements.size() - 1; i >= 0; i--) {
-					FloatRect elementBounds = elements[i]->getBounds(); 
-					if (elementBounds.contains(mousePosition)) {
-						selectedElement = elements[i]; 
-						currentSlide->setCurrentElement(selectedElement); 
+					if (elements[i]->getBounds().contains(mousePosition)) {
+						selectedElement = elements[i];
+						currentSlide->setCurrentElement(selectedElement);
 						std::cout << "Current element is: " << i << std::endl;
 						break;
 					}
@@ -57,6 +57,7 @@ void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 		}
 	}
 }
+
 
 void GraphicEditor::App(sf::RenderWindow& window) {
 
