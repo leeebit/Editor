@@ -7,7 +7,7 @@ GraphicEditor::GraphicEditor(){}
 
 <<<<<<< HEAD
 GraphicEditor::~GraphicEditor() {
-
+	asdgit commi
 }
 =======
 GraphicEditor::~GraphicEditor() {}
