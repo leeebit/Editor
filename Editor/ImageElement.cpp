@@ -1,60 +1,80 @@
 #include "ImageElement.h"
 
-ImageElement::ImageElement() {};
-ImageElement::~ImageElement() {};
+ImageElement::ImageElement(const sf::Vector2f& position) {
+
+    sprite.setPosition(position);
+}
+
+ImageElement::~ImageElement() {}
 
 bool ImageElement::loadFromFile(const std::string& filename) {
     if (!texture.loadFromFile(filename)) {
-        std::cerr << "Failed to load image from file: " << filename << std::endl;
         return false;
     }
     sprite.setTexture(texture);
     return true;
-};
+}
 
-// Метод для перемещения изображения
+void ImageElement::drawElements(sf::RenderWindow& window) {
+    window.draw(sprite);
+}
+
 void ImageElement::moveElements(float offsetX, float offsetY) {
-    sprite.move(offsetX, offsetY);
-};
-
-void ImageElement::resizeElements(float amount) {
-    sf::Vector2f size = sprite.getScale();
     sf::Vector2f currentPos = sprite.getPosition();
 
-    if (amount > 0) {
-        size.x += amount;
-        size.y += amount;
+    currentPos.x += offsetX;
+    currentPos.y += offsetY;
+
+    if (currentPos.x < 100) {
+        currentPos.x = 100;
     }
-    else if (amount < 0) {
-        float absoluteAmount = std::abs(amount);
-        size.x -= absoluteAmount;
-        size.y -= absoluteAmount;
+    else if (currentPos.x + sprite.getGlobalBounds().width > 900) {
+        currentPos.x = 900 - sprite.getGlobalBounds().width;
     }
 
-    if (size.x > 150 || size.x < 10) {
-       
-        size.x = std::max(10.0f, std::min(150.0f, size.x));
-        size.y = std::max(10.0f, std::min(150.0f, size.y));
+    if (currentPos.y < 125) {
+        currentPos.y = 125;
     }
-
-    sprite.setScale(size);
-
-    if (currentPos.x + size.x > 800) {
-        currentPos.x = 800 - size.x;
-    }
-    if (currentPos.y + size.y > 450) {
-        currentPos.y = 450 - size.y;
+    else if (currentPos.y + sprite.getGlobalBounds().height > 575) {
+        currentPos.y = 575 - sprite.getGlobalBounds().height;
     }
 
     sprite.setPosition(currentPos);
-};
+}
 
-// Метод для обрезки изображения
+void ImageElement::resizeElements(float amount) {
+    sf::Vector2f scale = sprite.getScale();
+
+    if (amount > 0) {
+        scale.x += amount;
+        scale.y += amount;
+    }
+    else if (amount < 0) {
+        float absoluteAmount = std::abs(amount);
+        scale.x -= absoluteAmount;
+        scale.y -= absoluteAmount;
+    }
+
+    if (scale.x > 1.5f || scale.x < 0.1f) {
+        scale.x = std::max(0.1f, std::min(1.5f, scale.x));
+        scale.y = std::max(0.1f, std::min(1.5f, scale.y));
+    }
+
+    sprite.setScale(scale);
+
+    sf::Vector2f spriteSize(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
+    sf::Vector2f currentPos = sprite.getPosition();
+    if (currentPos.x + spriteSize.x > 900) {
+        currentPos.x = 900 - spriteSize.x;
+    }
+    if (currentPos.y + spriteSize.y > 575) {
+        currentPos.y = 575 - spriteSize.y;
+    }
+
+    sprite.setPosition(currentPos);
+}
+
 void ImageElement::crop(const sf::IntRect& rect) {
     sprite.setTextureRect(rect);
 }
 
-// Метод для отрисовки изображения
-void ImageElement::drawElements(sf::RenderWindow& window) {
-    window.draw(sprite);
-}

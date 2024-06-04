@@ -99,3 +99,4 @@ void Triangle::setfillColorOutlineFigure(const sf::Color& color) {
 sf::FloatRect Triangle::getBounds(){
     return triangleShape.getGlobalBounds();
 }
+

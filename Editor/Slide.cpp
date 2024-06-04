@@ -58,7 +58,14 @@ void Slide::createElements(const sf::Vector2f& clickPosition) {
     else if (elementType == TRIANGLE) {
         newElement = new Triangle(clickPosition);
     }
-    if (newElement) {
+    else if (elementType == IMAGE){
+         newElement = new ImageElement(clickPosition);
+        if (!static_cast<ImageElement*>(newElement)->loadFromFile("apple-cat.jpg")) {
+            delete newElement;
+            return;
+        } 
+       }
+    if (newElement != nullptr) {
         elements.push_back(newElement);
         setCurrentElement(newElement);
         std::cout << "Create Element index is " << elements.size() - 1 << " added to the slide!" << std::endl;

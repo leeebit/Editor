@@ -61,7 +61,7 @@ void GraphicEditor::handleMouseClickOnElement(sf::Vector2f mousePosition) {
 
 void GraphicEditor::App(sf::RenderWindow& window) {
 
-	RectangleShape Menu(Vector2f(1024, 100));
+	RectangleShape Menu(Vector2f(1024, 50));
 	Menu.setFillColor(Color(223, 226, 219));
 	Menu.setPosition(0, 0);
 
@@ -70,84 +70,97 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 		std::cerr << "Error font load!\n";
 	}
 
-	std::vector<Button> buttons;
+	//std::vector<Button> buttons;
 
-	Text createPresentationText("Create presentation", font, 20);
+	Text createPresentationText("Create presentation", font, 15);
 	createPresentationText.setFillColor(Color::Black);
 	createPresentationText.setPosition(20, 20);
-	buttons.push_back(Button((IntRect)createPresentationText.getGlobalBounds(), sf::Color::Black, &on_presentation_clicked));
+	//buttons.push_back(Button((IntRect)createPresentationText.getGlobalBounds(), sf::Color::Black, &on_presentation_clicked));
 
-	Text createSlideText("Create slide", font, 20);
+	Text createSlideText("Create slide", font, 15);
 	createSlideText.setFillColor(Color::Black);
-	createSlideText.setPosition(200, 20);
+	createSlideText.setPosition(170, 20);
 
-	Text deleteSlideText("Delete slide", font, 20);
+	Text deleteSlideText("Delete slide", font, 15);
 	deleteSlideText.setFillColor(Color::Black);
-	deleteSlideText.setPosition(320, 20);
+	deleteSlideText.setPosition(270, 20);
 
-	Text changeElementText("ChangeElement", font, 20);
+	Text changeElementText("Change element", font, 15);
 	changeElementText.setFillColor(Color::Black);
-	changeElementText.setPosition(500, 20);
+	changeElementText.setPosition(370, 20);
 
-	Text createElementText("Create element", font, 20);
+	Text createElementText("Create element", font, 15);
 	createElementText.setFillColor(Color::Black);
-	createElementText.setPosition(700, 20);
+	createElementText.setPosition(490, 20);
 
-	Text deleteElementText("Delete element", font, 20);
+	Text deleteElementText("Delete element", font, 15);
 	deleteElementText.setFillColor(Color::Black);
-	deleteElementText.setPosition(850, 20);
+	deleteElementText.setPosition(610, 20);
 	window.draw(Menu);
 
-	sf::RectangleShape colorPickerDialog(sf::Vector2f(400, 400));
+	sf::RectangleShape colorPickerDialog(sf::Vector2f(1024, 50));
 	colorPickerDialog.setFillColor(sf::Color::White);
 	colorPickerDialog.setOutlineColor(sf::Color::Black);
 	colorPickerDialog.setOutlineThickness(1.f);
-	colorPickerDialog.setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2, (window.getSize().y - colorPickerDialog.getSize().y) / 2);
+	colorPickerDialog.setPosition(0, 60);
 	window.draw(colorPickerDialog);
 
-	sf::RectangleShape createElementWindow(sf::Vector2f(300, 200));
+	sf::RectangleShape createElementWindow(sf::Vector2f(1024, 50));
 	createElementWindow.setFillColor(sf::Color::White);
 	createElementWindow.setOutlineColor(sf::Color::Black);
 	createElementWindow.setOutlineThickness(1.f);
-	createElementWindow.setPosition((window.getSize().x - createElementWindow.getSize().x) / 2, (window.getSize().y - createElementWindow.getSize().y) / 2);
+	createElementWindow.setPosition(0, 60);
 	window.draw(createElementWindow);
 
-	sf::Text circleButton("Circle", font, 20);
+	sf::Text circleButton("Circle", font, 15);
 	circleButton.setFillColor(sf::Color::Black);
-	circleButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 20);
+	circleButton.setPosition(20, 70);
 	window.draw(circleButton);
 
-	sf::Text squareButton("Square", font, 20);
+	sf::Text squareButton("Square", font, 15);
 	squareButton.setFillColor(sf::Color::Black);
-	squareButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 60);
+	squareButton.setPosition(80, 70);
 	window.draw(squareButton);
 
-	sf::Text triangleButton("Triangle", font, 20);
+	sf::Text triangleButton("Triangle", font, 15);
 	triangleButton.setFillColor(sf::Color::Black);
-	triangleButton.setPosition(createElementWindow.getPosition().x + 20, createElementWindow.getPosition().y + 100);
+	triangleButton.setPosition(150, 70);
 	window.draw(triangleButton);
 
-	sf::RectangleShape createElementPropertiesWindow(sf::Vector2f(300, 200));
+	sf::Text imageButton("Image", font, 15);
+	imageButton.setFillColor(sf::Color::Black);
+	imageButton.setPosition(220, 70);
+	window.draw(imageButton);
+
+	sf::RectangleShape createElementPropertiesWindow(sf::Vector2f(1024, 50));
 	createElementPropertiesWindow.setFillColor(sf::Color::White);
 	createElementPropertiesWindow.setOutlineColor(sf::Color::Black);
 	createElementPropertiesWindow.setOutlineThickness(1.f);
-	createElementPropertiesWindow.setPosition((window.getSize().x - createElementPropertiesWindow.getSize().x) / 2, (window.getSize().y - createElementPropertiesWindow.getSize().y) / 2);
+	createElementPropertiesWindow.setPosition(0, 60);
 	window.draw(createElementPropertiesWindow);
 
-	sf::Text colorFillButton("Fill Color", font, 20);
+	sf::Text colorFillButton("Fill Color", font, 15);
 	colorFillButton.setFillColor(sf::Color::Black);
-	colorFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 20);
+	colorFillButton.setPosition(20, 70);
 	window.draw(colorFillButton);
 
-	sf::Text outlineFillButton("Fill Color Outline", font, 20);
+	sf::Text outlineFillButton("Fill Color Outline", font, 15);
 	outlineFillButton.setFillColor(sf::Color::Black);
-	outlineFillButton.setPosition(createElementPropertiesWindow.getPosition().x + 20, createElementPropertiesWindow.getPosition().y + 60);
+	outlineFillButton.setPosition(110, 70);
 	window.draw(outlineFillButton);
+
 	//палитра цветов
+	int colorRectSize = 20;
+	int padding = 7;
+	int colorsPerRow = (1024 - padding) / (colorRectSize + padding);
+
 	for (int i = 0; i < 36; ++i) {
-		colorRectangles[i] = sf::RectangleShape(sf::Vector2f(20, 20));
-		colorRectangles[i].setPosition((window.getSize().x - colorPickerDialog.getSize().x) / 2 + 20 + (i % 6) * 30, (window.getSize().y - colorPickerDialog.getSize().y) / 2 + 20 + (i / 6) * 30);
+		colorRectangles[i] = sf::RectangleShape(sf::Vector2f(colorRectSize, colorRectSize));
+		int x = i % colorsPerRow;
+		int y = i / colorsPerRow;
+		colorRectangles[i].setPosition(colorPickerDialog.getPosition().x + padding + x * (colorRectSize + padding), colorPickerDialog.getPosition().y + padding + y * (colorRectSize + padding));
 		colorRectangles[i].setFillColor(colors[i]);
+
 	}
 	bool isColorOutlinerClicked = false;
 	bool isColorFillButtonClicked = false;
@@ -217,6 +230,11 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 						else if (triangleButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 							isElementTypeChosen = true;
 							chosenElementType = TRIANGLE;
+							isCreateElementMenuActive = false;
+						}
+						else if (imageButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+							isElementTypeChosen = true;
+							chosenElementType = IMAGE;
 							isCreateElementMenuActive = false;
 						}
 					}
@@ -461,6 +479,7 @@ void GraphicEditor::App(sf::RenderWindow& window) {
 				window.draw(circleButton);
 				window.draw(squareButton);
 				window.draw(triangleButton);
+				window.draw(imageButton);
 			}
 
 			if (isChangeElementPropertiesMenuActive) {
