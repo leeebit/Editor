@@ -134,12 +134,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Libs\SFML-2.5.1\SFML-2.5.1\include</AdditionalIncludeDirectories>
+<<<<<<< HEAD
+      <AdditionalIncludeDirectories>C:\Users\danam\Libs\SFML-2.6.1-windows-vc17-64-bit\SFML-2.6.1\include;C:\Libs\SFML-2.6.1-windows-vc17-64-bit\SFML-2.6.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>C:\Program Files\SFML\include</AdditionalIncludeDirectories>
+>>>>>>> parent of a47f314 (класс картинок)
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Libs\SFML-2.5.1\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+<<<<<<< HEAD
+      <AdditionalLibraryDirectories>C:\Users\danam\Libs\SFML-2.6.1-windows-vc17-64-bit\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+=======
+      <AdditionalLibraryDirectories>C:\Program Files\SFML\lib</AdditionalLibraryDirectories>
+>>>>>>> parent of a47f314 (класс картинок)
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;sfml-network-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
