@@ -134,12 +134,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>C:\Program Files\SFML\include</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>C:\Libs\SFML-2.5.1\SFML-2.5.1\include</AdditionalIncludeDirectories>
+>>>>>>> a47f3146666a9864194108bdc35908460ab38ae6
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+<<<<<<< HEAD
       <AdditionalLibraryDirectories>C:\Program Files\SFML\lib</AdditionalLibraryDirectories>
+=======
+      <AdditionalLibraryDirectories>C:\Libs\SFML-2.5.1\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+>>>>>>> a47f3146666a9864194108bdc35908460ab38ae6
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;sfml-network-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

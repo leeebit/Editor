@@ -25,7 +25,7 @@ private:
 	sf::Color(222, 184, 135), sf::Color(70, 130, 180), sf::Color(255, 250, 205),
 	sf::Color(34, 139, 34), sf::Color(102, 205, 170), sf::Color(255, 215, 0)
 	};
-	int currentSlideIndex;
+	int currentSlideIndex = 1;
 	int chosenColorIndex = -1;
 	bool isColorPickerActive = false;
 	bool isCreateElementMenuActive = false;
@@ -39,6 +39,7 @@ public:
 	~GraphicEditor();
 	// void DeletePresentation();
 	void App(sf::RenderWindow& window);
+	bool on_presentation_clicked();
 	int getCurrentSlideIndex();
 	void setCurrentSlideIndex(int a);
 	void CreatePresentation();

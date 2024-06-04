@@ -1,106 +1,88 @@
 #include "Slide.h"
 
 Slide::Slide() {
-	elements = nullptr;
-	background = new sf::RectangleShape();
-	background->setSize(sf::Vector2f(800, 450));
-	background->setFillColor(sf::Color::White);
-	background->setOutlineColor(sf::Color::Red);
-	background->setOutlineThickness(2);
-	background->setPosition(100, 125);
+    background.setSize(sf::Vector2f(800, 450));
+    background.setFillColor(sf::Color::White);
+    background.setOutlineColor(sf::Color::Red);
+    background.setOutlineThickness(2);
+    background.setPosition(100, 125);
 }
 
 Slide::~Slide() {
-	delete background;
-	if (elements != nullptr) {
-		for (int i = 0; i < elementCount; ++i) {
-			delete elements[i];
-		}
-		delete[] elements;
-	}
+    for (auto element : elements) {
+        delete element;
+    }
+    elements.clear();
 }
+
 void Slide::setElementType(int type) {
-	elementType = type;
+    elementType = type;
 }
 
 int Slide::getElementType() const {
-	return elementType;
-}
-Elements** Slide::getElements() {
-	return elements;
+    return elementType;
 }
 
-int Slide::getChosenColorIndexElement(){
-	return chosenColorIndexElement;
+std::vector<Elements*>& Slide::getElements() {
+    return elements;
 }
-void Slide::setChosenColorIndexElement(int index){
-	chosenColorIndexElement = index;
+
+int Slide::getChosenColorIndexElement() {
+    return chosenColorIndexElement;
+}
+
+void Slide::setChosenColorIndexElement(int index) {
+    chosenColorIndexElement = index;
 }
 
 int Slide::getElementCount() {
-	return elementCount;
+    return elements.size();
 }
 
 void Slide::setCurrentElement(Elements* element) {
-	currentElement = element;
+    currentElement = element;
 }
 
 Elements* Slide::getCurrentElement() {
-	return currentElement;
+    return currentElement;
 }
 
 void Slide::createElements(const sf::Vector2f& clickPosition) {
-
-	if (!elements) {
-		elements = new Elements * [1];
-		// Создание нового элемента в пустом массиве
-		if (elementType == CIRCLE) {
-			elements[0] = new Circle(clickPosition);
-		}
-		else if (elementType == SQUARE) {
-			elements[0] = new Square(clickPosition);
-		}
-		else if (elementType == TRIANGLE) {
-			elements[0] = new Triangle();
-		}
-		
-		std::cout << "Element added to the slide!" << std::endl;
-	}
-	else {
-		// Расширение массива и добавление нового элемента в конец
-		Elements** temp = new Elements * [elementCount + 1];
-		for (int i = 0; i < elementCount; ++i) {
-			temp[i] = elements[i];
-		}
-		delete[] elements;
-
-		elements = temp;
-
-		if (elementType == CIRCLE) {
-			elements[elementCount] = new Circle(clickPosition);
-		}
-		else if (elementType == SQUARE) {
-			elements[elementCount] = new Square(clickPosition);
-		}
-		else if (elementType == TRIANGLE) {
-			elements[elementCount] = new Triangle();
-		}
-		std::cout << "Create Element index is " << elementCount << " added to the slide!" << std::endl;
-	}
-	elementCount++;
-	setCurrentElement(elements[elementCount - 1]);
-
+    Elements* newElement = nullptr;
+    if (elementType == CIRCLE) {
+        newElement = new Circle(clickPosition);
+    }
+    else if (elementType == SQUARE) {
+        newElement = new Square(clickPosition);
+    }
+    else if (elementType == TRIANGLE) {
+        newElement = new Triangle(clickPosition);
+    }
+    else if (elementType == IMAGE){
+         newElement = new ImageElement(clickPosition);
+        if (!static_cast<ImageElement*>(newElement)->loadFromFile("apple-cat.jpg")) {
+            delete newElement;
+            return;
+        } 
+       }
+    if (newElement != nullptr) {
+        elements.push_back(newElement);
+        setCurrentElement(newElement);
+        std::cout << "Create Element index is " << elements.size() - 1 << " added to the slide!" << std::endl;
+    }
 }
 
 void Slide::SetBackgroundColor(const sf::Color& color) {
-	background->setFillColor(color);
+    background.setFillColor(color);
 }
 
 sf::RectangleShape& Slide::getBackground() {
-	return*background;
+    return background;
 }
 
 void Slide::Draw(sf::RenderWindow& window) {
-	window.draw(*background);
+    window.draw(background);
+    for (auto element : elements) {
+        element->drawElements(window);
+    }
 }
-

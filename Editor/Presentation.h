@@ -10,16 +10,8 @@ public:
 	Presentation();
 	~Presentation();
 	int CreateSlide();
-	int CreateSlideAtIndex(int index);
-	void DeleteSlide();
-	int DeleteSlideAtIndex(int index);
+	int DeleteSlide();
 	std::vector<Slide*> getSlides(); // Геттер для slides
-	int getSlideCount() const {
-		return slideCount;
-	}
-	Slide* getOneSlide(int index) {
-		return slides[index];
-	}
-
+	
 };
 
