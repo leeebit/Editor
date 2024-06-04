@@ -1,17 +1,8 @@
 <<<<<<< HEAD
-<<<<<<< HEAD
 #pragma once
 #include <SFML/Graphics.hpp>
 
 typedef bool (*Action)();
-=======
-#pragma once
-#include <SFML/Graphics.hpp>
-
-class GraphEditor;
-
-typedef bool (*GraphEditor::* Action)();
->>>>>>> parent of a47f314 (класс картинок)
 
 class Button
 {
@@ -31,7 +22,6 @@ public:
 
 };
 
-<<<<<<< HEAD
 =======
 //#pragma once
 //#include <SFML/Graphics.hpp>
@@ -59,5 +49,3 @@ public:
 //};
 //
 >>>>>>> a47f3146666a9864194108bdc35908460ab38ae6
-=======
->>>>>>> parent of a47f314 (класс картинок)
